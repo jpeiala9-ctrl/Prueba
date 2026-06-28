@@ -1,0 +1,5898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>RI5 · EDITION</title>
+  
+  <!-- CONTROLES DE CACHÉ PARA EVITAR VERSIONES ANTIGUAS -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <!-- MANIFEST PWA -->
+  <link rel="manifest" href="./manifest.json">
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RI5">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+
+  <!-- Fuentes para el dosier -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome para el icono oficial de WhatsApp -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    /* ===== RESET Y VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --bg-card: #222222;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --accent-red: #c0a060;
+      --accent-green: #c0a060;
+      --accent-blue: #c0a060;
+      --accent-yellow: #c0a060;
+      --accent-purple: #c0a060;
+      --zone-1: #8AA0B0;
+      --zone-2: #9BB5A0;
+      --zone-3: #C9A78B;
+      --zone-4: #C99BA5;
+      --zone-5: #9AA5A5;
+      --zone-6: #8A8A8A;
+      --border-color: #333333;
+      --border-color-light: #444444;
+      --glow-color: rgba(192, 160, 96, 0.1);
+      --dot-color: rgba(255, 255, 255, 0.02);
+      --gold: #c0a060;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 40px;
+      --space-xxl: 64px;
+      --text-xs: 11px;
+      --text-sm: 12px;
+      --text-md: 14px;
+      --text-lg: 16px;
+      --text-xl: 18px;
+      --text-xxl: 24px;
+      --text-display: 32px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.2);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.3);
+      --stat-bg: #1a1a1a;
+      --stat-number: #ffffff;
+      --pending-bg: #c0a060;
+      --pending-text: #000000;
+      --logout-red: #c0a060;
+      --warning-red: #c0a060;
+      --font-mono: 'Courier New', monospace;
+      --font-dot: 'Courier New', 'Dot Matrix', monospace;
+      --prediction-bg: #1a1a1a;
+      --prediction-text: #ffffff;
+      --completado-bg: #2a2a2a;
+      --completado-border: #444444;
+      --no-realizado-bg: #2a1a1a;
+      --no-realizado-border: #a05a5a;
+      --no-realizado-color: #d46b6b;
+      --realizado-bg: #1a2a1a;
+      --realizado-border: #5a8f5a;
+      --realizado-color: #6bd46b;
+      
+      /* ===== NUEVO COLOR PARA NOTIFICACIONES: NARANJA ===== */
+      --notification-color: #E67E22;
+      
+      /* ===== VARIABLES DEL CHAT ===== */
+      --chat-bg: var(--bg-secondary);
+      --chat-sent-bg: var(--accent-blue);
+      --chat-received-bg: var(--bg-card);
+      --chat-text-color: var(--text-primary);
+      --chat-meta-color: #d0d0d0;
+      --chat-check-read: #4a9eff;
+      --chat-unread-name: var(--notification-color);
+      --chat-badge-bg: var(--accent-blue);
+      --chat-header-bg: var(--bg-primary);
+      --chat-header-text: var(--text-primary);
+      --chat-input-bg: var(--bg-primary);
+      --chat-send-btn-bg: var(--accent-blue);
+      --chat-separator-bg: rgba(255,255,255,0.15);
+      --chat-separator-text: var(--text-secondary);
+    }
+
+    body.manual-light {
+      --bg-primary: #f5f5f5;
+      --bg-secondary: #eaeaea;
+      --bg-card: #ffffff;
+      --text-primary: #222222;
+      --text-secondary: #666666;
+      --accent-red: #a0865a;
+      --accent-green: #a0865a;
+      --accent-blue: #a0865a;
+      --accent-yellow: #a0865a;
+      --accent-purple: #a0865a;
+      --border-color: #cccccc;
+      --border-color-light: #dddddd;
+      --gold: #a0865a;
+      --stat-bg: #eaeaea;
+      --stat-number: #222222;
+      --pending-bg: #a0865a;
+      --pending-text: #ffffff;
+      --logout-red: #a0865a;
+      --warning-red: #a0865a;
+      --prediction-bg: #eaeaea;
+      --prediction-text: #222222;
+      --completado-bg: #dddddd;
+      --completado-border: #bbbbbb;
+      --no-realizado-bg: #ffebee;
+      --no-realizado-border: #ef9a9a;
+      --no-realizado-color: #c62828;
+      --realizado-bg: #e8f5e9;
+      --realizado-border: #a5d6a7;
+      --realizado-color: #2e7d32;
+      --chat-bg: var(--bg-secondary);
+      --chat-sent-bg: var(--accent-blue);
+      --chat-received-bg: var(--bg-card);
+      --chat-text-color: var(--text-primary);
+      --chat-meta-color: #555555;
+      --chat-check-read: #2a6fd1;
+      --chat-unread-name: var(--notification-color);
+      --chat-badge-bg: var(--accent-blue);
+      --chat-header-bg: var(--bg-primary);
+      --chat-header-text: var(--text-primary);
+      --chat-input-bg: var(--bg-primary);
+      --chat-send-btn-bg: var(--accent-blue);
+      --chat-separator-bg: rgba(0,0,0,0.08);
+      --chat-separator-text: var(--text-secondary);
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 350;
+      letter-spacing: 0.2px;
+      line-height: 1.5;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+      font-size: var(--text-md);
+      width: 100%;
+      padding-bottom: 60px; /* espacio para la barra inferior fija */
+    }
+
+    /* ===== DOSIER / LANDING ===== */
+    .landing-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      z-index: 300000;
+      overflow-y: auto;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .landing-container.hide-landing {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .landing-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .hero-landing {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 0;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .hero-landing .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: #d4a843;
+      letter-spacing: 4px;
+      margin-bottom: 48px;
+    }
+    .hero-landing h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 9vw, 120px);
+      line-height: 0.92;
+      letter-spacing: -1px;
+      margin-bottom: 32px;
+      color: #f5f2eb;
+    }
+    .hero-landing h1 em {
+      font-style: normal;
+      color: #d4a843;
+    }
+    .hero-landing p {
+      font-size: 18px;
+      color: #ccc8c0;
+      max-width: 560px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid #2a2a2a;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 16px;
+        padding-top: 36px;
+      }
+    }
+    .hero-stats .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: #d4a843;
+      line-height: 1;
+      display: block;
+    }
+    .hero-stats .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #b8b8b8;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 4px;
+    }
+    .section-landing {
+      padding: 80px 0;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #d4a843;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 0.95;
+      margin-bottom: 48px;
+      color: #f5f2eb;
+    }
+    .zonas-grid-landing {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin: 48px 0;
+    }
+    @media (max-width: 900px) { .zonas-grid-landing { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .zonas-grid-landing { grid-template-columns: repeat(2, 1fr); } }
+    .zona-card-landing {
+      padding: 20px 16px;
+      border-radius: 4px;
+      background: rgba(138,160,176,0.12);
+      border-left: 3px solid;
+    }
+    .zona-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+    .zona-name {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #d0cdc8;
+    }
+    .features-grid-landing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      border: 1px solid #2a2a2a;
+      margin-top: 48px;
+    }
+    .feature-card-landing {
+      padding: 40px 32px;
+      background: #0a0a0a;
+      border-right: 1px solid #2a2a2a;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: #d4a843;
+      margin-bottom: 10px;
+    }
+    .feature-desc {
+      font-size: 14px;
+      color: #c0bdb8;
+      line-height: 1.65;
+    }
+    .collab-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+    @media (max-width: 768px) { .collab-grid { grid-template-columns: 1fr; } }
+    .collab-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .collab-option {
+      padding: 28px;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      background: #111;
+      position: relative;
+    }
+    .collab-option.featured {
+      border-color: #d4a843;
+      background: rgba(212,168,67,0.08);
+    }
+    .collab-option-badge {
+      position: absolute;
+      top: -1px;
+      right: 20px;
+      background: #d4a843;
+      color: #0a0a0a;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 0 0 4px 4px;
+    }
+    .collab-option-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: #d4a843;
+    }
+    .collab-option-desc {
+      font-size: 13px;
+      color: #c0bdb8;
+      line-height: 1.6;
+    }
+    .enter-button {
+      background: #d4a843;
+      border: none;
+      color: #0a0a0a;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 2px;
+      padding: 16px 40px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      display: inline-block;
+      width: auto;
+    }
+    .enter-button:hover {
+      background: #e8c060;
+      transform: scale(1.02);
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-landing .logo { transition-delay: 0.1s; }
+    .hero-landing h1 { transition-delay: 0.2s; }
+    .hero-landing p { transition-delay: 0.3s; }
+    .hero-stats { transition-delay: 0.4s; }
+    .section-eyebrow { transition-delay: 0.1s; }
+    .section-title { transition-delay: 0.2s; }
+    .section-landing p { transition-delay: 0.3s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(1) { transition-delay: 0.1s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(2) { transition-delay: 0.2s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(3) { transition-delay: 0.3s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(4) { transition-delay: 0.4s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(5) { transition-delay: 0.5s; }
+    .zonas-grid-landing .zona-card-landing:nth-child(6) { transition-delay: 0.6s; }
+    .features-grid-landing .feature-card-landing:nth-child(1) { transition-delay: 0.1s; }
+    .features-grid-landing .feature-card-landing:nth-child(2) { transition-delay: 0.2s; }
+    .features-grid-landing .feature-card-landing:nth-child(3) { transition-delay: 0.3s; }
+    .features-grid-landing .feature-card-landing:nth-child(4) { transition-delay: 0.4s; }
+    .features-grid-landing .feature-card-landing:nth-child(5) { transition-delay: 0.5s; }
+    .features-grid-landing .feature-card-landing:nth-child(6) { transition-delay: 0.6s; }
+    .collab-options .collab-option:nth-child(1) { transition-delay: 0.1s; }
+    .collab-options .collab-option:nth-child(2) { transition-delay: 0.2s; }
+    .collab-options .collab-option:nth-child(3) { transition-delay: 0.3s; }
+
+    /* ===== APP ORIGINAL (TODO EL CSS) ===== */
+    .wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      width: 100%;
+    }
+
+    .card {
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0;
+      padding: var(--space-md) var(--space-lg);
+      box-shadow: var(--shadow-md);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #loginPage .card, #mainContent .card, #verificationPage .card {
+      max-width: 100%;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      color: var(--text-primary);
+      text-shadow: none;
+    }
+
+    h1 {
+      font-size: var(--text-display);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      letter-spacing: 4px;
+    }
+
+    h2 {
+      font-size: var(--text-xxl);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h3 {
+      font-size: var(--text-xl);
+      margin: var(--space-xl) 0 var(--space-md) 0;
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--border-color-light);
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: max(30px, env(safe-area-inset-top));
+      margin-bottom: var(--space-xs);
+      width: 100%;
+      padding: 0;
+    }
+
+    .header-left, .header-right {
+      width: 80px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      padding: 0;
+      font-size: clamp(1.8rem, 5vw, 2.2rem);
+      line-height: 1;
+      text-align: center;
+      flex: 0 1 auto;
+      letter-spacing: 4px;
+      cursor: pointer;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--space-sm);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: var(--text-primary);
+      opacity: 0.7;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .theme-toggle:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .admin-username {
+      color: var(--accent-yellow) !important;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .admin-username:hover {
+      opacity: 0.8;
+    }
+
+    /* Nombre de usuario debajo del encabezado */
+    .user-name-display {
+      color: var(--text-secondary);
+      text-align: center;
+      font-size: var(--text-sm);
+      margin: 0 0 var(--space-md) 0;
+      letter-spacing: 1px;
+      font-weight: 350;
+    }
+
+    @media (max-width: 480px) {
+      .app-header {
+        margin-top: max(20px, env(safe-area-inset-top));
+      }
+      .header-left, .header-right {
+        width: 60px;
+      }
+      .theme-toggle {
+        width: 34px;
+        height: 34px;
+        font-size: 20px;
+      }
+    }
+
+    /* NUEVO MODAL PARA INFORMACIÓN DE DÍAS DISPONIBLES */
+    #infoDiasModal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      z-index: 100001;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      color: var(--text-primary);
+    }
+    #infoDiasModal.active {
+      display: block;
+    }
+    #infoDiasOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 100000;
+    }
+    #infoDiasOverlay.active {
+      display: block;
+    }
+
+    .logout-container {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--space-xl);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .logout-button {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 2px;
+      color: var(--text-primary);
+      font-size: var(--text-sm);
+      padding: var(--space-sm) var(--space-lg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      width: auto;
+      min-width: 150px;
+      margin: 0 auto;
+      font-weight: 350;
+    }
+    
+    .logout-button:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      margin: var(--space-lg) 0 var(--space-xl) 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 0;
+      padding: 0;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      padding: var(--space-sm) var(--space-xs);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-sm);
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 0;
+      font-weight: 350;
+      text-align: center;
+    }
+    
+    .auth-tab.active {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      font-weight: 400;
+    }
+
+    .auth-tab:hover {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+    }
+    
+    .auth-form { 
+      display: none; 
+      margin-top: var(--space-md);
+    }
+    .auth-form.active { display: block; }
+
+    .delete-account-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: var(--space-sm);
+      border-radius: 2px;
+      width: 100%;
+      margin-top: var(--space-md);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-sm);
+      transition: all 0.2s ease;
+      font-weight: 350;
+    }
+    
+    .delete-account-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .tabs-container { margin: var(--space-xl) 0; flex: 1; }
+    
+    .tabs-header {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: var(--space-md);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 0;
+      padding: 0;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .tab-button {
+      flex: 1;
+      min-width: 70px;
+      max-width: 100px;
+      padding: var(--space-sm) var(--space-xs);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-xs);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      text-align: center;
+      position: relative;
+      font-weight: 350;
+    }
+    
+    .tab-button.active {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      font-weight: 400;
+    }
+    
+    .tab-button:hover {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+    }
+    
+    .tab-button.soporte-unread {
+      color: var(--accent-blue) !important;
+      animation: latido-texto 1.5s infinite;
+      position: relative;
+    }
+    
+    .tab-button.soporte-unread::after {
+      content: "●";
+      position: absolute;
+      top: 0;
+      right: var(--space-xs);
+      font-size: var(--text-xs);
+      color: var(--accent-blue);
+    }
+    
+    .tab-button.chat-unread {
+      color: var(--accent-blue) !important;
+      position: relative;
+    }
+    .tab-button.chat-unread::after {
+      content: attr(data-chat-count);
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 10px;
+      min-width: 16px;
+      text-align: center;
+      line-height: 1;
+    }
+    
+    .tab-button.amigos-solicitudes-unread {
+      color: var(--accent-blue) !important;
+      position: relative;
+    }
+    
+    .tab-button.amigos-solicitudes-unread::after {
+      content: attr(data-count);
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 10px;
+      min-width: 16px;
+      text-align: center;
+      line-height: 1;
+    }
+    
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    @keyframes latido-texto {
+      0% { color: var(--accent-blue); }
+      50% { color: #e0c090; }
+      100% { color: var(--accent-blue); }
+    }
+
+    input, button, select, textarea {
+      width: 100%;
+      padding: 0 16px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+      outline: none;
+      font-weight: 350;
+      box-sizing: border-box;
+      height: 52px;
+      line-height: normal;
+    }
+    
+    textarea {
+      height: auto;
+      min-height: 100px;
+      padding: 14px 16px;
+      resize: vertical;
+    }
+    
+    select {
+      line-height: 52px;
+    }
+    
+    input::placeholder, textarea::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+      font-weight: 350;
+    }
+    
+    input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-blue);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(192, 160, 96, 0.1);
+    }
+    
+    input.error { border-color: var(--zone-5); }
+
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    
+    .password-wrapper input {
+      margin-bottom: 0;
+      padding-right: 70px;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: var(--space-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: var(--text-xs);
+      user-select: none;
+      z-index: 2;
+      text-transform: lowercase;
+      letter-spacing: 1px;
+      background: var(--bg-primary);
+      padding: var(--space-xs) var(--space-xs);
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      line-height: 1;
+      font-weight: 350;
+    }
+    
+    .password-toggle:hover {
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .button-main {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-weight: 350;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      width: auto;
+      min-width: 280px;
+      margin: var(--space-lg) auto !important;
+      display: block;
+      text-align: center;
+      transition: all 0.2s ease;
+      border-radius: 10px;
+      padding: 0 32px;
+      font-size: 18px;
+      height: 52px;
+      line-height: 52px;
+    }
+    
+    .button-main:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    
+    .button-main:disabled { 
+      opacity: 0.5; 
+      cursor: not-allowed; 
+      pointer-events: none;
+    }
+
+    .action-button {
+      padding: 0 24px;
+      margin: var(--space-xs) auto;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-weight: 350;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+      display: block;
+      font-size: 16px;
+      height: 52px;
+      line-height: 52px;
+    }
+    
+    .action-button:hover {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    
+    .action-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    #loginBtn, #registerBtn {
+      min-width: 280px;
+      padding: 0 32px;
+      font-size: 18px;
+      height: 52px;
+      line-height: 52px;
+    }
+
+    .curiosity {
+      margin: var(--space-xl) 0;
+      padding: var(--space-xl);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    
+    .curiosity:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    
+    .curiosity span { 
+      color: var(--text-primary); 
+      font-weight: 350; 
+      font-size: var(--text-xl); 
+      line-height: 1.5; 
+      position: relative; 
+      z-index: 1; 
+    }
+    
+    .curiosity small { 
+      display: block; 
+      color: var(--text-secondary); 
+      margin-top: var(--space-xs); 
+      font-size: var(--text-xs); 
+      font-weight: 350;
+    }
+
+    .zone-card {
+      margin: var(--space-md) 0;
+      padding: var(--space-lg);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: none;
+      width: 100%;
+      max-width: 100%;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    
+    .zone-card:active {
+      transform: none !important;
+      scale: none !important;
+    }
+    
+    .zone-card:hover { 
+      border-color: var(--accent-blue); 
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .zone-card strong {
+      color: var(--text-primary);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      display: block;
+      margin-bottom: var(--space-xs);
+      text-align: center;
+      width: 100%;
+    }
+
+    .zone-card .long {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      margin-top: 0;
+      color: var(--text-primary);
+      font-size: var(--text-md);
+      text-align: center;
+    }
+    
+    .zone-card.active .long {
+      max-height: 1000px;
+      margin-top: var(--space-sm);
+    }
+    
+    .zone-card .long p {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: var(--space-sm) 0;
+    }
+    
+    .zone-card .long p strong {
+      color: var(--accent-yellow);
+      font-size: var(--text-sm) !important;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .zone-card .long ul {
+      text-align: left;
+      display: inline-block;
+      margin: 0 auto;
+    }
+    
+    .zone-card .long li {
+      margin: var(--space-xs) 0;
+      position: relative;
+      padding-left: var(--space-md);
+      text-align: left;
+    }
+    
+    .zone-card .long li::before {
+      content: "•";
+      color: var(--accent-green);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .zone-card[style*="#8AA0B0"] { border-left: 4px solid var(--zone-1); }
+    .zone-card[style*="#9BB5A0"] { border-left: 4px solid var(--zone-2); }
+    .zone-card[style*="#C9A78B"] { border-left: 4px solid var(--zone-3); }
+    .zone-card[style*="#C99BA5"] { border-left: 4px solid var(--zone-4); }
+    .zone-card[style*="#9AA5A5"] { border-left: 4px solid var(--zone-5); }
+    .zone-card[style*="#8A8A8A"] { border-left: 4px solid var(--zone-6); }
+
+    .pred-bar {
+      height: 64px;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 10px;
+      margin: var(--space-xs) 0;
+      padding: 0 var(--space-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--prediction-bg);
+      border: 1px solid var(--border-color);
+      font-size: var(--text-lg);
+      text-align: center;
+      color: var(--prediction-text) !important;
+      font-weight: 350;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    
+    .pred-bar:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
+    }
+
+    #results {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: auto;
+    }
+
+    #calendarioEntreno {
+      margin: var(--space-xl) 0;
+      padding: var(--space-md);
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      width: 100%;
+      border: 1px solid var(--border-color);
+    }
+    .calendar-grid-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xs);
+      width: 100%;
+    }
+    .calendar-header div {
+      text-align: center;
+      color: var(--text-primary);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: var(--space-xs) 0;
+      white-space: nowrap;
+      font-weight: 350;
+    }
+    #calendarioGrid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: var(--space-xs);
+      width: 100%;
+    }
+    .calendario-dia {
+      aspect-ratio: 1 / 1;
+      padding: var(--space-xs);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: var(--text-xs);
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.4;
+      text-align: center;
+      color: var(--text-primary);
+      font-weight: 350;
+      font-family: 'Courier New', monospace;
+    }
+    .calendario-dia strong {
+      color: var(--text-primary);
+      font-weight: 400;
+      font-size: var(--text-md);
+      display: block;
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+    .calendario-dia div {
+      font-size: var(--text-xs);
+      line-height: 1.3;
+      max-width: 100%;
+      overflow: visible;
+      white-space: normal;
+      word-break: break-word;
+      font-weight: 350;
+      color: var(--text-primary);
+      padding: 0 2px;
+    }
+    .calendario-dia:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-secondary);
+      transform: scale(1.02);
+      z-index: 5;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .calendario-dia.realizado {
+      border-color: var(--realizado-border);
+      background: var(--realizado-bg);
+      position: relative;
+    }
+    
+    .calendario-dia.realizado::after {
+      content: "✓";
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 12px;
+      color: var(--realizado-color);
+      font-weight: bold;
+    }
+    
+    .sesion-no-realizada {
+      border-color: var(--no-realizado-border);
+      background: var(--no-realizado-bg);
+      opacity: 0.8;
+      position: relative;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .sesion-no-realizada::after {
+      content: "✗";
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 12px;
+      color: var(--no-realizado-color);
+      font-weight: bold;
+    }
+    
+    .sesion-completada {
+      border-color: var(--completado-border);
+      background: var(--completado-bg);
+      opacity: 0.6;
+      position: relative;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .sesion-completada::after {
+      content: "✓";
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 12px;
+      color: var(--accent-green);
+    }
+    
+    .calendario-dia.bloqueado {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    .calendario-dia.bloqueado:hover {
+      transform: none;
+      border-color: var(--border-color);
+      background: var(--bg-primary);
+    }
+    
+    .sesion-descanso { 
+      border-color: var(--border-color); 
+      background: var(--bg-secondary);
+    }
+    .sesion-rodaje { 
+      border-color: var(--zone-1); 
+      background: var(--bg-primary);
+    }
+    .sesion-series { 
+      border-color: var(--zone-2); 
+      background: var(--bg-primary);
+    }
+    .sesion-tempo { 
+      border-color: var(--zone-3); 
+      background: var(--bg-primary);
+    }
+    .sesion-largo { 
+      border-color: var(--zone-4); 
+      background: var(--bg-primary);
+    }
+    .sesion-strength { 
+      border-color: var(--zone-6); 
+      background: var(--bg-primary);
+    }
+
+    .calendario-navegacion {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-md);
+      width: 100%;
+    }
+    
+    .calendario-navegacion button {
+      width: auto;
+      padding: var(--space-xs) var(--space-sm);
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: var(--text-xs);
+      margin: 0;
+      transition: all 0.2s ease;
+      font-weight: 350;
+      white-space: nowrap;
+      height: auto;
+      line-height: normal;
+    }
+    
+    .calendario-navegacion button:first-child {
+      justify-self: start;
+    }
+    
+    .calendario-navegacion button:last-child {
+      justify-self: end;
+    }
+    
+    .calendario-navegacion button:hover:not(:disabled) {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    
+    .calendario-navegacion button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .calendario-navegacion span {
+      color: var(--text-primary);
+      font-size: var(--text-xs);
+      font-weight: 350;
+      text-align: center;
+    }
+
+    .cerrar-plan-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: 10px;
+      font-size: var(--text-xs);
+      font-weight: 350;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: var(--space-md);
+      width: 100%;
+      text-align: center;
+      height: auto;
+      line-height: normal;
+    }
+    
+    .cerrar-plan-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .btn-copy, .btn-save, .btn-delete, .btn-plan, .btn-view {
+      border-color: var(--border-color);
+    }
+
+    .historial-controls {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    
+    .historial-controls label {
+      color: var(--text-primary);
+      font-size: var(--text-sm);
+      font-weight: 350;
+    }
+    
+    .historial-controls select {
+      width: auto;
+      padding: 0 var(--space-sm);
+      margin: 0;
+      font-size: var(--text-sm);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      font-weight: 350;
+      height: 36px;
+      line-height: 36px;
+    }
+    
+    .historial-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+    
+    .historial-item {
+      position: relative;
+      padding: var(--space-md);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 100px;
+    }
+    
+    .historial-item:hover {
+      background: var(--bg-card);
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .historial-item .fecha {
+      color: var(--accent-blue);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-xs);
+      text-align: center;
+      font-weight: 350;
+    }
+    
+    .historial-item .resumen {
+      color: var(--text-primary);
+      font-size: var(--text-sm);
+      text-align: center;
+      word-break: break-word;
+      font-weight: 350;
+    }
+    
+    .historial-item .delete-icon {
+      position: absolute;
+      top: var(--space-sm);
+      right: var(--space-sm);
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+      cursor: pointer;
+      width: auto;
+      padding: var(--space-xs);
+      margin: 0;
+      z-index: 5;
+      opacity: 0.5;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    
+    .historial-item .delete-icon:hover {
+      opacity: 1;
+      color: var(--zone-5);
+    }
+    
+    .historial-item .detalle {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      margin-top: 0;
+      color: var(--text-primary);
+      font-size: var(--text-sm);
+      border-top: 1px solid transparent;
+      text-align: center;
+    }
+    
+    .historial-item.abierto .detalle {
+      max-height: 400px;
+      margin-top: var(--space-sm);
+      border-top-color: var(--border-color);
+      padding-top: var(--space-sm);
+    }
+    
+    .historial-item .hora-detalle {
+      color: var(--zone-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-xs);
+      font-weight: 350;
+      text-align: center;
+    }
+    
+    .historial-item .predicciones {
+      color: var(--accent-blue);
+      font-size: var(--text-sm);
+      margin: var(--space-xs) 0;
+      background: rgba(192, 160, 96, 0.1);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: 10px;
+      display: inline-block;
+      font-weight: 350;
+      text-align: center;
+    }
+
+    .zonas-pastillas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin: var(--space-xs) 0;
+      justify-content: center;
+    }
+    
+    .zona-pastilla {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: 10px;
+      font-size: var(--text-sm);
+      font-weight: 350;
+      background: var(--bg-primary);
+      border: 1px solid;
+    }
+    
+    .zona-pastilla.z1 { border-color: var(--zone-1); color: var(--zone-1); }
+    .zona-pastilla.z2 { border-color: var(--zone-2); color: var(--zone-2); }
+    .zona-pastilla.z3 { border-color: var(--zone-3); color: var(--zone-3); }
+    .zona-pastilla.z4 { border-color: var(--zone-4); color: var(--zone-4); }
+    .zona-pastilla.z5 { border-color: var(--zone-5); color: var(--zone-5); }
+    .zona-pastilla.z6 { border-color: var(--zone-6); color: var(--zone-6); }
+    
+    .zona-pastilla span {
+      background: currentColor;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .planes-historial {
+      margin: var(--space-xl) 0;
+      padding: var(--space-md);
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .planes-historial h3 {
+      color: var(--accent-blue);
+      margin-bottom: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+    
+    .plan-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: var(--space-sm);
+      margin-bottom: var(--space-xs);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      text-align: center;
+      min-height: 60px;
+    }
+    
+    .plan-card .plan-info {
+      text-align: center;
+      width: 100%;
+      padding-right: 40px;
+      box-sizing: border-box;
+    }
+    
+    .plan-card .plan-fecha {
+      color: var(--zone-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-xs);
+      font-weight: 350;
+      text-align: center;
+    }
+    
+    .plan-card .plan-resumen {
+      color: var(--text-primary);
+      font-size: var(--text-sm);
+      font-weight: 350;
+      text-align: center;
+    }
+    
+    .plan-card .delete-plan {
+      position: absolute;
+      right: var(--space-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      padding: var(--space-xs) var(--space-sm);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+      font-weight: 350;
+      z-index: 2;
+      height: auto;
+      line-height: normal;
+    }
+    
+    .plan-card .delete-plan:hover {
+      border-color: var(--zone-5);
+      color: var(--zone-5);
+    }
+
+    #detalleSesion .modal-content {
+      padding: var(--space-lg);
+      font-size: var(--text-md);
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .sesion-resumen {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .sesion-resumen div {
+      text-align: center;
+      background: var(--bg-primary);
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 350;
+    }
+
+    .sesion-resumen span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .sesion-objetivos,
+    .sesion-estructura,
+    .sesion-comentarios {
+      background: var(--bg-primary);
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .sesion-objetivos h4,
+    .sesion-estructura h4,
+    .sesion-comentarios h4 {
+      margin: 0 0 10px 0;
+      color: var(--accent-blue);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: left;
+    }
+
+    .sesion-objetivos p,
+    .sesion-estructura p {
+      margin: 5px 0;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .sesion-pasos-detallados {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .paso-detalle-sesion {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .paso-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .paso-header span {
+      font-size: 20px;
+    }
+
+    .paso-header strong {
+      color: var(--accent-yellow);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .paso-detalle-sesion p {
+      margin: 0 0 0 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      text-align: left;
+      padding-left: 10px;
+      border-left: 2px solid var(--accent-blue);
+    }
+
+    @media (max-width: 480px) {
+      .sesion-resumen {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .descanso-container {
+      text-align: center;
+      padding: 15px;
+    }
+    .descanso-icono {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .descanso-texto {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .descanso-recomendaciones {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+    .descanso-recomendaciones li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+    .descanso-recomendaciones li:last-child {
+      border-bottom: none;
+    }
+
+    #detalleSesion .modal-content.sesion-descanso { 
+      border: 1px solid var(--border-color); 
+    }
+    #detalleSesion .modal-content.sesion-rodaje,
+    #detalleSesion .modal-content.sesion-series,
+    #detalleSesion .modal-content.sesion-tempo,
+    #detalleSesion .modal-content.sesion-largo,
+    #detalleSesion .modal-content.sesion-strength { 
+      border: 1px solid var(--accent-blue); 
+    }
+    
+    #detalleSesion .modal-content.sesion-completada {
+      border: 1px solid var(--completado-border);
+      background: var(--completado-bg);
+    }
+    
+    #detalleSesion .modal-content.sesion-no-realizada {
+      border: 1px solid var(--no-realizado-border);
+      background: var(--no-realizado-bg);
+    }
+
+    .sesion-checkbox {
+      margin: var(--space-md) 0 var(--space-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      padding: var(--space-md);
+      background: var(--bg-secondary);
+      border-radius: 10px;
+    }
+
+    .sesion-checkbox input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      accent-color: var(--realizado-color);
+      cursor: pointer;
+    }
+
+    .sesion-checkbox label {
+      color: var(--text-primary);
+      font-size: var(--text-md);
+      cursor: pointer;
+      font-weight: 350;
+    }
+
+    #sesionFeedbackContainer {
+      margin: 20px 0;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    #sesionFeedbackContainer h4 {
+      margin: 0 0 15px 0;
+      color: var(--accent-yellow);
+      font-size: 16px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .feedback-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .feedback-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 100px;
+      color: white;
+    }
+
+    .feedback-btn[data-value="1"] { background: #e74c3c; }
+    .feedback-btn[data-value="2"] { background: #f39c12; }
+    .feedback-btn[data-value="3"] { background: #2ecc71; }
+    .feedback-btn[data-value="4"] { background: #3498db; }
+
+    .feedback-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .close-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      height: auto;
+      line-height: normal;
+    }
+    .close-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .mensajes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mensaje-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100%;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .mensaje-item:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .mensaje-item.nuevo {
+      border-left: 4px solid var(--notification-color);
+      background: rgba(230, 126, 34, 0.05);
+    }
+
+    .mensaje-header {
+      padding: 16px;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .mensaje-header .mensaje-fecha {
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 350;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .mensaje-header .mensaje-remitente {
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 350;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .mensaje-header .nuevo-badge {
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      font-weight: 350;
+      letter-spacing: 0.5px;
+    }
+
+    .mensaje-contenido {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      opacity: 0;
+      background: var(--bg-secondary);
+    }
+
+    .mensaje-item.abierto .mensaje-contenido {
+      max-height: 300px;
+      opacity: 1;
+    }
+
+    .mensaje-contenido p {
+      padding: 16px;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 350;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .mensaje-botones {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px;
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .mensaje-botones button {
+      min-width: 100px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 350;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      height: auto;
+      line-height: normal;
+    }
+
+    .mensaje-botones button.responder {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    .mensaje-botones button.responder:hover {
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .mensaje-botones button.eliminar {
+      border-color: var(--zone-5);
+      color: var(--zone-5);
+    }
+
+    .mensaje-botones button.eliminar:hover {
+      background: var(--zone-5);
+      color: var(--bg-primary);
+    }
+
+    @media (max-width: 480px) {
+      .mensaje-header {
+        padding: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .mensaje-header .mensaje-fecha,
+      .mensaje-header .mensaje-remitente {
+        font-size: 12px;
+      }
+      
+      .mensaje-contenido p {
+        padding: 12px;
+        font-size: 12px;
+      }
+      
+      .mensaje-botones {
+        padding: 10px;
+        gap: 6px;
+      }
+      
+      .mensaje-botones button {
+        min-width: 80px;
+        padding: 6px 12px;
+        font-size: 10px;
+      }
+    }
+
+    #adminUsersList {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .usuario-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .usuario-item:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
+    }
+
+    .usuario-item.nuevo {
+      border-left: 4px solid var(--notification-color);
+      background: rgba(230, 126, 34, 0.05);
+    }
+
+    .usuario-item.nuevo .usuario-nombre {
+      color: var(--notification-color);
+      font-weight: 400;
+    }
+
+    .usuario-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .usuario-nombre {
+      color: var(--accent-blue);
+      font-size: 14px;
+      font-weight: 350;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .usuario-email {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .usuario-badge {
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 350;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .usuario-detalle {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      opacity: 0;
+      margin-top: 0;
+      border-top: 1px solid transparent;
+    }
+
+    .usuario-item.abierto .usuario-detalle {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 12px;
+      border-top-color: var(--border-color);
+      padding-top: 12px;
+    }
+
+    .usuario-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .info-label {
+      color: var(--text-secondary);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 350;
+    }
+
+    .usuario-acciones {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .usuario-acciones button {
+      min-width: 80px;
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 10px;
+      font-weight: 350;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0;
+      height: auto;
+      line-height: normal;
+    }
+
+    .usuario-acciones button:hover {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    .usuario-acciones button.eliminar:hover {
+      border-color: var(--zone-5);
+      background: var(--zone-5);
+    }
+
+    @media (max-width: 480px) {
+      .usuario-item {
+        padding: 12px;
+      }
+      
+      .usuario-info {
+        gap: 8px;
+      }
+      
+      .usuario-acciones button {
+        min-width: 70px;
+        padding: 5px 8px;
+        font-size: 9px;
+      }
+    }
+
+    .soporte-section {
+      margin-top: var(--space-xl);
+    }
+    
+    .soporte-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: var(--space-md);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      border-radius: 0;
+      padding: 0;
+    }
+    
+    .soporte-tab {
+      flex: 1;
+      padding: var(--space-xs);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-xs);
+      cursor: pointer;
+      border-radius: 0;
+      transition: all 0.3s;
+      font-weight: 350;
+    }
+    
+    .soporte-tab.active {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      font-weight: 400;
+    }
+
+    .soporte-tab:hover {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+    }
+    
+    .soporte-panel {
+      display: none;
+    }
+    
+    .soporte-panel.active {
+      display: block;
+    }
+
+    .dias-semana-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--accent-yellow);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      margin: 20px 0 10px;
+      font-weight: 350;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .info-icon {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-align: center;
+      line-height: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    .info-icon:hover {
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+      border-color: var(--accent-blue);
+    }
+
+    .dias-semana-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      justify-content: center;
+      margin: var(--space-xs) 0 var(--space-sm);
+      background: var(--bg-secondary);
+      padding: var(--space-sm);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .dia-checkbox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 50px;
+    }
+    
+    .dia-checkbox input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      margin: 0 0 var(--space-xs) 0;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+    }
+    
+    .dia-checkbox label {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-weight: 350;
+      text-transform: uppercase;
+    }
+
+    .premium {
+      color: var(--gold) !important;
+      cursor: pointer;
+      transition: text-shadow 0.3s;
+    }
+    
+    .premium:hover {
+      text-shadow: 0 0 10px var(--gold);
+    }
+
+    #premiumOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(5px);
+      z-index: 20000;
+    }
+    
+    #premiumOverlay.active { display: block; }
+    
+    #premiumModal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: var(--space-lg);
+      max-width: 400px;
+      width: 90%;
+      z-index: 20001;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+    
+    #premiumModal.active { display: block; }
+    
+    #premiumModal h2 { color: var(--accent-blue); margin-bottom: var(--space-md); }
+    #premiumModal p { margin: var(--space-xs) 0; color: var(--text-primary); font-weight: 350; }
+    
+    #premiumModal button {
+      margin-top: var(--space-md);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+      border: none;
+      padding: var(--space-xs) var(--space-lg);
+      border-radius: 10px;
+      font-weight: 350;
+      cursor: pointer;
+      height: auto;
+      line-height: normal;
+    }
+    
+    #premiumModal button:hover { box-shadow: 0 0 10px var(--accent-blue); }
+
+    #premium-expiry-banner {
+      display: none;
+      background: var(--accent-yellow);
+      color: #000000;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: 10px;
+      margin-bottom: var(--space-md);
+      text-align: center;
+      font-weight: 350;
+      animation: slideDown 0.5s ease;
+    }
+    
+    #premium-expiry-banner button {
+      background: var(--bg-primary);
+      color: var(--accent-yellow);
+      border: none;
+      padding: var(--space-xs) var(--space-xs);
+      border-radius: 10px;
+      margin-left: var(--space-xs);
+      cursor: pointer;
+      font-size: var(--text-xs);
+      width: auto;
+      font-weight: 350;
+      height: auto;
+    }
+    
+    #premium-expiry-banner button:hover {
+      background: var(--bg-card);
+    }
+
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+    }
+    #modalOverlay.visible { display: block; }
+
+    #detalleSesion {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      max-width: 700px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 0;
+      z-index: 10000;
+      box-shadow: var(--shadow-lg);
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    #detalleSesion.visible { display: block; }
+
+    #resetOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 20000;
+    }
+
+    #resetOverlay.active { display: block; }
+
+    #resetModal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 480px;
+      width: 90%;
+      z-index: 20001;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+
+    #resetModal.active { display: block; }
+
+    #resetModal h2 {
+      color: var(--accent-blue);
+      margin-bottom: 16px;
+      font-size: 24px;
+      text-align: center;
+      border: none;
+      padding: 0;
+    }
+
+    .reset-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 24px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    #resetModal input {
+      width: 100%;
+      padding: 0 16px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+      outline: none;
+      height: 52px;
+      line-height: 52px;
+    }
+
+    #resetModal input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(192, 160, 96, 0.2);
+    }
+
+    #resetModal .error-message {
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .reset-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .reset-send {
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+      border: none;
+      padding: 0 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      height: 52px;
+      line-height: 52px;
+    }
+
+    .reset-send:hover {
+      background: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .reset-cancel {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 0 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      height: 52px;
+      line-height: 52px;
+    }
+
+    .reset-cancel:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    #pwa-banner {
+      position: fixed; bottom: var(--space-md); left: var(--space-md); right: var(--space-md); max-width: 400px; margin: 0 auto;
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px;
+      padding: var(--space-sm) var(--space-md); display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-sm); z-index: 100000; box-shadow: var(--shadow-lg);
+      animation: slideUp 0.5s ease;
+    }
+    
+    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    
+    #pwa-banner span { color: var(--text-primary); font-size: var(--text-xs); flex: 1; font-weight: 350; }
+    
+    #pwa-banner button {
+      width: auto; margin: 0; padding: var(--space-xs) var(--space-sm); background: transparent;
+      border: 1px solid var(--border-color); color: var(--text-primary); font-weight: 350; cursor: pointer;
+      height: auto;
+      line-height: normal;
+    }
+    
+    #pwa-banner button:hover { background: var(--accent-blue); border-color: var(--accent-blue); color: var(--bg-primary); }
+    
+    #pwa-banner .close-banner { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); }
+
+    #toast-container {
+      position: fixed;
+      top: max(60px, env(safe-area-inset-top) + 10px);
+      right: var(--space-md);
+      z-index: 1000000;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      max-width: 300px;
+    }
+    
+    .toast {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: var(--space-xs) var(--space-sm);
+      color: var(--text-primary);
+      font-size: var(--text-xs);
+      font-family: 'Inter', sans-serif;
+      box-shadow: var(--shadow-md);
+      animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+      cursor: pointer;
+      font-weight: 350;
+    }
+    
+    .toast.success { border-left: 4px solid var(--realizado-color); }
+    .toast.error { border-left: 4px solid var(--no-realizado-color); }
+    .toast.warning { border-left: 4px solid var(--zone-3); }
+    
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateX(100%); }
+    }
+
+    #confirmOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(5px);
+      z-index: 30000;
+    }
+    
+    #confirmOverlay.active { display: block; }
+    
+    #confirmModal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      max-width: 400px;
+      width: 90%;
+      z-index: 30001;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      display: none;
+    }
+    
+    #confirmModal.active { display: block; }
+    
+    #confirmModal h3 { color: var(--accent-blue); margin-bottom: var(--space-md); }
+    #confirmModal p { color: var(--text-primary); margin-bottom: var(--space-lg); font-weight: 350; }
+    
+    #confirmModal .confirm-buttons {
+      display: flex;
+      gap: var(--space-xs);
+      justify-content: center;
+    }
+    
+    #confirmModal button {
+      padding: var(--space-xs) var(--space-md);
+      border-radius: 10px;
+      font-weight: 350;
+      cursor: pointer;
+      border: none;
+      min-width: 100px;
+      height: auto;
+      line-height: normal;
+    }
+    
+    #confirmModal .confirm-yes {
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    
+    #confirmModal .confirm-no {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(3px);
+      z-index: 40000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #loadingOverlay.active { display: flex; }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--bg-secondary);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spinner 0.8s linear infinite;
+    }
+    
+    @keyframes spinner {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      color: var(--zone-5); 
+      font-size: var(--text-xs); 
+      margin-top: -8px; 
+      margin-bottom: var(--space-xs);
+      opacity: 0; 
+      transition: opacity 0.3s ease; 
+      text-align: center;
+      font-weight: 350;
+    }
+    
+    .error-message.visible { opacity: 1; }
+
+    .nota-plan {
+      color: var(--text-primary); 
+      margin: var(--space-md) 0; 
+      padding: var(--space-md);
+      background: var(--bg-primary);
+      border: 1px solid var(--accent-blue);
+      border-radius: 10px;
+      font-size: var(--text-xs);
+      text-align: center;
+      line-height: 1.6;
+    }
+    
+    .nota-plan p {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .nota-plan strong {
+      color: var(--accent-blue);
+    }
+    
+    #results { margin-top: var(--space-xl); }
+    
+    .footer {
+      margin-top: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid var(--border-color);
+      text-align: center; color: var(--text-secondary); font-size: var(--text-xs); letter-spacing: 1px;
+    }
+    
+    #loginPage, #mainContent, #verificationPage { transition: opacity 0.3s ease; }
+    
+    .loading { position: relative; pointer-events: none; opacity: 0.7; }
+    
+    .loading::after {
+      content: ""; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px;
+      margin: -10px 0 0 -10px; border: 2px solid var(--accent-blue); border-top-color: transparent;
+      border-radius: 50%; animation: spinner 0.8s linear infinite;
+    }
+    
+    .btn-success { background: var(--realizado-color) !important; color: var(--bg-primary) !important; }
+    .btn-error { background: var(--no-realizado-color) !important; color: var(--bg-primary) !important; }
+
+    .calculo-limit-msg {
+      text-align: center;
+      color: var(--accent-yellow);
+      font-size: var(--text-xs);
+      margin: var(--space-xs) 0;
+      padding: var(--space-xs);
+      background: rgba(192, 160, 96, 0.1);
+      border-radius: 10px;
+      font-weight: 350;
+    }
+
+    .warning-message {
+      color: var(--warning-red);
+      border-color: var(--warning-red);
+    }
+
+    #cuestionarioEntreno h3 {
+      margin: var(--space-xl) 0 var(--space-md);
+    }
+
+    .tab-content h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin: var(--space-lg) 0 var(--space-sm) 0;
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tab-content h3:first-of-type {
+      margin-top: 0;
+    }
+
+    #welcomeOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(5px);
+      z-index: 20000;
+    }
+    
+    #welcomeOverlay.active { display: block; }
+    
+    #welcomeModal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: var(--space-lg);
+      max-width: 400px;
+      width: 90%;
+      z-index: 20001;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+    
+    #welcomeModal.active { display: block; }
+    
+    #welcomeModal h2 { color: var(--accent-blue); margin-bottom: var(--space-md); }
+    #welcomeModal p { margin: var(--space-xs) 0; color: var(--text-primary); font-weight: 350; }
+    
+    #welcomeModal button {
+      margin-top: var(--space-md);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+      border: none;
+      padding: var(--space-xs) var(--space-lg);
+      border-radius: 10px;
+      font-weight: 350;
+      cursor: pointer;
+      height: auto;
+      line-height: normal;
+    }
+    
+    #welcomeModal button:hover { box-shadow: 0 0 10px var(--accent-blue); }
+
+    .perfil-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .perfil-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent-blue);
+      background: var(--bg-secondary);
+    }
+    
+    .perfil-avatar-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--text-secondary);
+      border: 3px solid var(--border-color);
+    }
+    
+    .perfil-info {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .perfil-nombre {
+      font-size: 24px;
+      margin-bottom: 5px;
+      color: var(--accent-blue);
+    }
+    
+    .perfil-username {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    
+    .perfil-stats {
+      display: flex;
+      gap: 20px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+    
+    .perfil-stat {
+      text-align: center;
+    }
+    
+    .perfil-stat span {
+      display: block;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--accent-yellow);
+    }
+    
+    .perfil-stat label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .perfil-detalle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .perfil-detalle-item {
+      background: var(--bg-secondary);
+      padding: 15px 10px;
+      border-radius: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-height: 80px;
+      justify-content: center;
+      word-break: break-word;
+    }
+    
+    .perfil-detalle-item .label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    
+    .perfil-detalle-item .value {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--accent-blue);
+      line-height: 1.4;
+    }
+    
+    /* ===== GAMIFICATION STYLES ===== */
+    .gamification-section {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 24px;
+    }
+    .level-progress {
+      width: 100%;
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .level-progress-fill {
+      height: 100%;
+      background: var(--accent-blue);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-primary);
+      border-radius: 30px;
+      padding: 4px 12px;
+      font-size: 12px;
+      margin: 4px;
+      border: 1px solid var(--border-color);
+    }
+    .badges-container {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    /* Badge de nivel sobre el avatar - VERSIÓN MEJORADA */
+    .nivel-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      font-family: 'Inter', sans-serif;
+      z-index: 2;
+      transform: translate(30%, 30%);
+    }
+
+    .resultado-avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      overflow: visible !important;
+    }
+
+    .resultado-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    /* ============================= */
+
+    /* Estilos para la sección "MIS ÚLTIMOS ENTRENAMIENTOS" en el perfil */
+    .mis-entrenamentos-section h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 12px;
+    }
+    .mis-entreno-item:last-child {
+      border-bottom: none !important;
+    }
+    @media (max-width: 480px) {
+      .mis-entreno-item {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 8px;
+      }
+    }
+    
+    /* ===== AMIGOS: PESTAÑAS INTERNAS ===== */
+    .amigos-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .amigos-tab {
+      padding: var(--space-sm) var(--space-xs);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-xs);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-weight: 350;
+    }
+    
+    .amigos-tab.active {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      font-weight: 400;
+    }
+    
+    .amigos-tab:hover {
+      background: transparent;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+    }
+    
+    .amigos-panel {
+      display: none;
+    }
+    
+    .amigos-panel.active {
+      display: block;
+    }
+    
+    .buscar-usuario-input {
+      margin: 20px 0;
+    }
+    
+    .resultado-busqueda {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .resultado-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      flex: 1;
+    }
+    
+    .resultado-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .resultado-nombre {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--accent-blue);
+    }
+    
+    .resultado-username {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .solicitud-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .solicitud-item .resultado-nombre {
+      color: var(--notification-color);
+    }
+    
+    .solicitud-botones {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .solicitud-botones button {
+      padding: 5px 15px;
+      font-size: 12px;
+      width: auto;
+      margin: 0;
+      height: auto;
+      line-height: normal;
+    }
+    
+    .tab-button.amigos-solicitudes-unread {
+      color: var(--accent-blue) !important;
+      position: relative;
+    }
+
+    .tab-button.amigos-solicitudes-unread::after {
+      content: attr(data-count);
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 10px;
+      min-width: 16px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .btn-amigo {
+      height: 32px !important;
+      line-height: 32px !important;
+      padding: 0 12px !important;
+      font-size: 12px !important;
+      width: auto;
+      margin: 0;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-amigo:hover {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    .btn-amigo.eliminar:hover {
+      border-color: var(--no-realizado-border);
+      background: var(--no-realizado-border);
+    }
+    .chat-btn {
+      background: var(--accent-blue) !important;
+      color: var(--bg-primary) !important;
+      border-color: var(--accent-blue) !important;
+      font-weight: 500;
+    }
+    .chat-btn:hover {
+      background: var(--accent-gold) !important;
+      border-color: var(--accent-gold) !important;
+      transform: scale(1.02);
+    }
+
+    #chatModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 200000;
+      justify-content: center;
+      align-items: center;
+    }
+    #chatModal .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--chat-header-bg);
+      color: var(--chat-header-text);
+    }
+    .chat-header span {
+      font-size: 18px;
+      font-weight: 500;
+      color: inherit;
+    }
+    .close-chat {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--chat-header-text);
+      height: auto;
+      width: auto;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background-color: var(--chat-bg);
+    }
+    .chat-date-separator {
+      text-align: center;
+      font-size: 12px;
+      color: var(--chat-separator-text);
+      background-color: var(--chat-separator-bg);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin: 8px auto;
+      width: fit-content;
+      backdrop-filter: blur(4px);
+    }
+    .chat-message {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 18px;
+      position: relative;
+      word-wrap: break-word;
+      color: var(--chat-text-color);
+    }
+    .chat-message.sent {
+      background-color: var(--chat-sent-bg);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      color: var(--bg-primary);
+    }
+    .chat-message.received {
+      background-color: var(--chat-received-bg);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      color: var(--text-primary);
+    }
+    .message-text {
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+    .message-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      line-height: 1;
+    }
+    .message-time {
+      color: var(--chat-meta-color);
+      font-size: 11px;
+    }
+    .message-status {
+      font-size: 12px;
+      margin-right: 2px;
+    }
+    .message-status.sent {
+      color: var(--chat-meta-color);
+    }
+    .message-status.read {
+      color: var(--chat-check-read);
+    }
+    .conversacion-nombre-no-leido {
+      color: var(--notification-color);
+      font-weight: 600;
+    }
+    .conversacion-no-leida .conversacion-nombre {
+      color: var(--notification-color) !important;
+      font-weight: 600;
+    }
+    .conversacion-no-leida .conversacion-preview {
+      color: var(--notification-color) !important;
+      font-weight: 500;
+    }
+    .conversacion-badge {
+      background-color: var(--chat-badge-bg);
+      color: var(--bg-primary);
+      border-radius: 20px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .chat-input {
+      display: flex;
+      padding: 12px;
+      border-top: 1px solid var(--border-color);
+      gap: 8px;
+      background: var(--chat-input-bg);
+    }
+    .chat-input input {
+      flex: 1;
+      margin: 0;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 20px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      outline: none;
+    }
+    .chat-input .send-btn {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      padding: 0;
+      border-radius: 50%;
+      background: var(--chat-send-btn-bg);
+      color: var(--bg-primary);
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .chat-input .clear-chat-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      padding: 0;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-input .clear-chat-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    .conversacion-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .conversacion-item:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
+    }
+    .conversacion-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 12px;
+    }
+    .conversacion-info {
+      flex: 1;
+    }
+    .conversacion-nombre {
+      font-weight: 500;
+      color: var(--accent-blue);
+      margin-bottom: 4px;
+    }
+    .conversacion-preview {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conversacion-fecha {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-left: 8px;
+    }
+
+    /* ===== MODAL GESTIÓN PREMIUM ===== */
+    #premiumManageModal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100000;
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+      color: var(--text-primary);
+    }
+    #premiumManageModal .premium-field {
+      margin-bottom: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #premiumManageModal label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    #premiumManageModal select,
+    #premiumManageModal input {
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0 16px;
+      height: 52px;
+      line-height: 52px;
+      font-size: 15px;
+    }
+    #premiumManageModal select {
+      cursor: pointer;
+    }
+    #premiumManageModal .premium-buttons {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      margin-top: var(--space-md);
+    }
+
+    /* Transición suave para evitar parpadeo en la lista de usuarios */
+    .usuario-item {
+      transition: opacity 0.15s ease, background 0.2s ease;
+    }
+
+    /* Botón actualizar usuarios estilo píldora (sin emoji) */
+    .refresh-users-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 24px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .refresh-users-btn:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+
+    /* Píldora premium/normal dentro del usuario (debajo del nombre) */
+    .usuario-premium-badge {
+      display: inline-block;
+      background: var(--zone-2);
+      color: var(--bg-primary);
+      border-radius: 30px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+    .usuario-premium-badge.normal {
+      background: var(--zone-5);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 480px) {
+      .perfil-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      .perfil-stats {
+        justify-content: center;
+      }
+      .perfil-detalle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .amigos-tabs {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .chat-input .clear-chat-btn,
+      .chat-input .send-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      #premiumManageModal select,
+      #premiumManageModal input {
+        max-width: 240px;
+        height: 48px;
+        line-height: 48px;
+      }
+      .refresh-users-btn {
+        font-size: 12px;
+        padding: 6px 18px;
+      }
+      .usuario-premium-badge {
+        padding: 3px 10px;
+        font-size: 10px;
+      }
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99999;
+    }
+
+    .sesion-resumen-horizontal {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 10px !important;
+      margin: 20px 0 !important;
+      text-align: center !important;
+    }
+    .resumen-item {
+      background: var(--bg-primary) !important;
+      padding: 12px 8px !important;
+      border-radius: 10px !important;
+      font-size: 14px !important;
+      font-weight: 350 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 4px !important;
+    }
+    .resumen-item span {
+      font-size: 20px !important;
+    }
+
+    .sesion-objetivo-principal,
+    .sesion-zonas {
+        margin-bottom: 20px;
+    }
+    .sesion-estructura-detallada {
+        margin-top: 20px;
+    }
+    .paso-detalle-sesion {
+        margin-bottom: 20px;
+    }
+
+    #modalEditarPerfilOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 20002;
+      pointer-events: auto;
+      display: none;
+    }
+
+    #modalEditarPerfil {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      z-index: 20003;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      pointer-events: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .wall-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .wall-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .wall-item:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .wall-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .wall-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .wall-user-info {
+      flex: 1;
+    }
+
+    .wall-username {
+      font-weight: 500;
+      color: var(--accent-blue);
+      font-size: 16px;
+    }
+
+    .wall-fecha {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .wall-entreno {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+
+    .wall-entreno-tipo {
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .wall-entreno-detalles {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .wall-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .wall-like-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+
+    .wall-like-btn:hover {
+      background: rgba(192, 160, 96, 0.1);
+      transform: scale(1.05);
+    }
+
+    .wall-like-btn.liked {
+      color: #e74c3c;
+    }
+
+    .wall-like-btn .like-count {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .wall-entreno-detalles {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .wall-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+    }
+
+    .sesion-zonas .zona-item {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .sesion-zonas .zona-item span {
+      font-weight: normal;
+      color: var(--text-secondary);
+    }
+    .sesion-zonas .zona-item strong {
+      font-weight: bold;
+      color: var(--accent-blue);
+    }
+
+    #loadMoreUsersBtn {
+      margin-bottom: 40px !important;
+      margin-top: 20px !important;
+    }
+
+    #tab-admin h3 {
+      margin-top: 40px !important;
+      margin-bottom: 20px !important;
+      padding-top: 20px !important;
+      border-top: 1px solid var(--border-color);
+    }
+
+    #adminMessagesList {
+      margin-top: 20px !important;
+      margin-bottom: 30px !important;
+    }
+
+    #adminBroadcastText {
+      margin-top: 20px !important;
+      margin-bottom: 20px !important;
+    }
+
+    #tab-admin .action-button {
+      margin-top: 10px !important;
+    }
+
+    .amigo-con-mensaje-no-leido {
+      color: var(--notification-color) !important;
+      font-weight: 600;
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: border-color 0.2s ease;
+      cursor: pointer;
+    }
+    .stat-card:hover {
+      border-color: var(--accent-yellow);
+      transform: scale(1.02);
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent-yellow);
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+    .admin-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .admin-filters input,
+    .admin-filters select {
+      flex: 1;
+      min-width: 140px;
+      height: 40px;
+      padding: 0 12px;
+      font-size: 13px;
+      margin: 0;
+    }
+    .admin-filters .refresh-users-btn {
+      margin: 0;
+      flex: 0 0 auto;
+    }
+    #adminUserModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
+      z-index: 100000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    #adminUserModal.active {
+      display: flex;
+    }
+    .admin-modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .admin-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-modal-header h3 {
+      margin: 0;
+      color: var(--accent-yellow);
+      font-size: 20px;
+    }
+    .admin-modal-close {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0 8px;
+    }
+    .admin-modal-close:hover {
+      color: var(--text-primary);
+    }
+    .admin-modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .admin-modal-grid .item {
+      background: var(--bg-secondary);
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+    .admin-modal-grid .item .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 0.3px;
+    }
+    .admin-modal-grid .item .value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+    .admin-modal-entrenos {
+      margin-top: 12px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 12px;
+    }
+    .admin-modal-entrenos h4 {
+      font-size: 14px;
+      color: var(--accent-yellow);
+      margin-bottom: 8px;
+    }
+    .admin-modal-entrenos .entreno-item {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-color-light);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .admin-modal-entrenos .entreno-item:last-child {
+      border-bottom: none;
+    }
+
+    #adminListModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(4px);
+      z-index: 100001;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    #adminListModal .admin-modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    #adminListModal .admin-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    #adminListModal .admin-modal-header h3 {
+      margin: 0;
+      color: var(--accent-yellow);
+      font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+      .admin-filters input,
+      .admin-filters select {
+        min-width: 100px;
+        height: 36px;
+        font-size: 12px;
+      }
+      .admin-modal-grid {
+        grid-template-columns: 1fr;
+      }
+      .stat-number {
+        font-size: 22px;
+      }
+      #adminListModal .admin-modal-content {
+        padding: 16px;
+      }
+    }
+
+    /* ===== BARRA DE NAVEGACIÓN INFERIOR (TOOLBAR) - PERFECTAMENTE CENTRADA ===== */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      min-height: 60px;
+      height: auto;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      width: 100%;
+      max-width: 100%;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+      padding: 0;
+      margin: 0;
+    }
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      gap: 0px;
+      position: relative;
+      padding: 0;
+      height: 60px;
+    }
+    .bottom-nav-item .nav-icon {
+      font-size: 24px;
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+    .bottom-nav-item .nav-label {
+      font-size: 8px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .bottom-nav-item.active {
+      color: var(--accent-yellow);
+    }
+    .bottom-nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 12px);
+      height: 70%;
+      background: rgba(192, 160, 96, 0.15);
+      border: 1px solid rgba(192, 160, 96, 0.4);
+      border-radius: 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bottom-nav-item.active .nav-icon {
+      transform: scale(1.05);
+    }
+    .bottom-nav-item .nav-icon, .bottom-nav-item .nav-label {
+      position: relative;
+      z-index: 1;
+    }
+    .notif-badge {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      background: var(--notification-color);
+      color: var(--bg-primary);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-card);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .notif-badge.hidden {
+      display: none;
+    }
+
+    /* Subpestañas dentro de Comunidad y Soporte */
+    .comunidad-subtabs, .soporte-subtabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .subtab-button {
+      flex: 1;
+      padding: 8px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 0 !important;
+    }
+    .subtab-button.active {
+      color: var(--accent-yellow);
+      border-bottom-color: var(--accent-yellow);
+    }
+    .subtab-content {
+      display: none;
+    }
+    .subtab-content.active {
+      display: block;
+    }
+
+    /* Botón cerrar sesión en perfil */
+    .logout-btn-profile {
+      margin-top: 20px;
+      background: transparent;
+      border: 1px solid var(--zone-5);
+      color: var(--zone-5);
+      padding: 10px;
+      border-radius: 10px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .logout-btn-profile:hover {
+      background: var(--zone-5);
+      color: var(--bg-primary);
+    }
+
+    /* Ocultar pestañas superiores antiguas */
+    .tabs-header {
+      display: none !important;
+    }
+    .logout-container {
+      display: none !important;
+    }
+    .footer {
+      display: none !important;
+    }
+
+    /* Ocultar mensajes de bienvenida y cálculos */
+    #userWelcome, #calculoCounter {
+      display: none !important;
+    }
+
+    /* Contenedor del historial de cálculos (toggle) */
+    #historialCalculosContainer {
+      margin-top: var(--space-xl);
+    }
+    .historial-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+      font-size: var(--text-sm);
+      width: 100%;
+      max-width: 350px;
+      margin: var(--space-xs) auto;
+      display: block;
+      text-align: center;
+      transition: all 0.2s ease;
+      font-weight: 350;
+      height: auto;
+      line-height: normal;
+    }
+    .historial-toggle-btn:hover {
+      border-color: var(--accent-blue);
+      background: var(--accent-blue);
+      color: var(--bg-primary);
+    }
+    .historial-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+      opacity: 0;
+      margin-top: 0;
+    }
+    .historial-content.abierto {
+      max-height: 2000px;
+      opacity: 1;
+      margin-top: var(--space-md);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== DOSIER / LANDING ===== -->
+  <div id="landingContainer" class="landing-container">
+    <div class="landing-content">
+      <div class="hero-landing">
+        <div class="logo reveal">RI5</div>
+        <h1 class="reveal">Entrena<br>con <em>ciencia.</em><br>Compite<br>con datos.</h1>
+        <p class="reveal">RI5 es la app española de referencia para corredores que quieren entrenar por zonas de frecuencia cardíaca, con planes personalizados, comunidad activa y análisis en tiempo real.</p>
+        <div class="hero-stats reveal">
+          <div><span class="num">6</span><span class="label">Zonas de FC</span></div>
+          <div><span class="num">1.344</span><span class="label">Entrenamientos</span></div>
+          <div><span class="num">5</span><span class="label">Fases de periodización</span></div>
+          <div><span class="num">100%</span><span class="label">App española</span></div>
+        </div>
+      </div>
+      <div class="section-landing">
+        <div class="section-eyebrow reveal">El corazón de RI5</div>
+        <h2 class="section-title reveal">6 zonas.<br>Un sistema.</h2>
+        <p class="reveal" style="color:#c8c5c0; max-width:560px; margin-bottom:32px;">RI5 calcula al instante las 6 zonas de frecuencia cardíaca de cada corredor basándose en su umbral de lactato.</p>
+        <div class="zonas-grid-landing">
+          <div class="zona-card-landing reveal" style="border-left-color:#8AA0B0;"><div class="zona-label" style="color:#8AA0B0;">Z1</div><div class="zona-name">Recuperación</div></div>
+          <div class="zona-card-landing reveal" style="border-left-color:#9BB5A0;"><div class="zona-label" style="color:#9BB5A0;">Z2</div><div class="zona-name">Base aeróbica</div></div>
+          <div class="zona-card-landing reveal" style="border-left-color:#C9A78B;"><div class="zona-label" style="color:#C9A78B;">Z3</div><div class="zona-name">Tempo</div></div>
+          <div class="zona-card-landing reveal" style="border-left-color:#C99BA5;"><div class="zona-label" style="color:#C99BA5;">Z4</div><div class="zona-name">Umbral</div></div>
+          <div class="zona-card-landing reveal" style="border-left-color:#9AA5A5;"><div class="zona-label" style="color:#9AA5A5;">Z5</div><div class="zona-name">VO₂ Máx</div></div>
+          <div class="zona-card-landing reveal" style="border-left-color:#8A8A8A;"><div class="zona-label" style="color:#8A8A8A;">Z6</div><div class="zona-name">Velocidad</div></div>
+        </div>
+      </div>
+      <div class="section-landing">
+        <div class="section-eyebrow reveal">Funcionalidades</div>
+        <h2 class="section-title reveal">Más que<br>una calculadora.</h2>
+        <div class="features-grid-landing">
+          <div class="feature-card-landing reveal"><div class="feature-icon">📊</div><div class="feature-title">Zonas personalizadas</div><div class="feature-desc">Calcula las 6 zonas de FC de cada corredor en segundos. Ritmos objetivo incluidos.</div></div>
+          <div class="feature-card-landing reveal"><div class="feature-icon">📅</div><div class="feature-title">Planes inteligentes</div><div class="feature-desc">Planes de 1 a 12 meses con periodización real: Base, Construcción, Específica, Pico y Taper.</div></div>
+          <div class="feature-card-landing reveal"><div class="feature-icon">🧠</div><div class="feature-title">Feedback adaptativo</div><div class="feature-desc">El plan ajusta volumen e intensidad según cómo el corredor vive cada sesión.</div></div>
+          <div class="feature-card-landing reveal"><div class="feature-icon">👥</div><div class="feature-title">Comunidad activa</div><div class="feature-desc">Muro de entrenamientos, sistema de amigos, chat privado y likes.</div></div>
+          <div class="feature-card-landing reveal"><div class="feature-icon">📱</div><div class="feature-title">PWA instalable</div><div class="feature-desc">Funciona como app nativa en iOS y Android sin necesidad de App Store.</div></div>
+          <div class="feature-card-landing reveal"><div class="feature-icon">🏔️</div><div class="feature-title">Trail running</div><div class="feature-desc">Base de datos específica para trail: rodaje en sendero, series de cuestas, etc.</div></div>
+        </div>
+      </div>
+      <div class="section-landing" id="colaboracion-landing">
+        <div class="section-eyebrow reveal">Para marcas</div>
+        <h2 class="section-title reveal">Tu marca donde<br>el corredor<br>entrena.</h2>
+        <div class="collab-grid">
+          <div>
+            <p class="reveal" style="font-size:16px; color:#ccc8c0; line-height:1.8; margin-bottom:24px;">RI5 es el espacio donde el corredor toma decisiones: qué entrenar hoy, cuánto esfuerzo dar, cómo progresar. Una marca presente aquí conecta con el corredor en el momento de máxima motivación.</p>
+            <p class="reveal" style="font-size:14px; color:#b8b5b0;">Buscamos marcas que compartan la filosofía de entrenar con cabeza: zapatillas, relojes, nutrición, ropa técnica, fisioterapia, suplementación.</p>
+          </div>
+          <div class="collab-options">
+            <div class="collab-option featured reveal"><div class="collab-option-badge">Recomendado</div><div class="collab-option-title">Patrocinador oficial</div><div class="collab-option-desc">Logo y mención en la app, contenido co-creado para Instagram de RI5, acceso premium gratuito para comunidad de la marca.</div></div>
+            <div class="collab-option reveal"><div class="collab-option-title">Colaboración de contenido</div><div class="collab-option-desc">Artículos, consejos o retos de entrenamiento con la marca como fuente experta.</div></div>
+            <div class="collab-option reveal"><div class="collab-option-title">Acceso para tu comunidad</div><div class="collab-option-desc">Licencias premium para los corredores de tu club, marca o comunidad.</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; margin: 60px 0 40px;">
+        <button id="enterAppBtn" class="enter-button reveal">ENTRAR A RI5 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AQUÍ COMIENZA LA APP ORIGINAL ===== -->
+  <div id="infoDiasOverlay" onclick="cerrarInfoDias()"></div>
+  <div id="infoDiasModal">
+    <h3 style="margin-bottom:12px; color:var(--accent-blue);">📅 DÍAS DISPONIBLES</h3>
+    <p style="margin-bottom:8px; font-size:14px;">Marca los días que PUEDES entrenar. El plan decidirá qué días toca cada tipo de sesión según periodización profesional. Si un día que marcas sale como descanso, es porque la planificación lo requiere para una correcta recuperación.</p>
+    <button onclick="cerrarInfoDias()" style="margin-top:16px; padding:8px 16px; background:var(--accent-blue); color:var(--bg-primary); border:none; border-radius:10px; cursor:pointer;">ENTENDIDO</button>
+  </div>
+
+  <div id="toast-container"></div>
+  <div id="confirmOverlay"></div>
+  <div id="confirmModal">
+    <h3 id="confirmTitle">CONFIRMAR</h3>
+    <p id="confirmMessage">¿Estás seguro?</p>
+    <div class="confirm-buttons">
+      <button class="confirm-yes" id="confirmYes">SÍ</button>
+      <button class="confirm-no" id="confirmNo">NO</button>
+    </div>
+  </div>
+
+  <div id="loadingOverlay"><div class="spinner"></div></div>
+
+  <div id="premium-expiry-banner" style="display:none;">
+    <span id="expiry-message"></span>
+    <button onclick="contactarAdmin()">CONTACTAR</button>
+  </div>
+
+  <div id="pwa-banner" style="display:none;">
+    <span>📲 INSTALA RI5 EN TU MÓVIL</span>
+    <button onclick="instalarPWA()">INSTALAR</button>
+    <button class="close-banner" onclick="cerrarBannerPWA()">✕</button>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay" onclick="cerrarModalSesion()"></div>
+
+  <div id="detalleSesion">
+    <div class="modal-content" id="modalColorWrapper">
+      <h3 id="tituloSesion"></h3>
+      <div id="descripcionSesion"></div>
+      <div class="sesion-checkbox" id="sesionCheckboxContainer" style="display: none;">
+        <input type="checkbox" id="sesionRealizada">
+        <label for="sesionRealizada">✅ Marcar como realizada</label>
+      </div>
+      <div id="sesionFeedbackContainer" style="display: none;">
+        <h4>¿CÓMO FUE LA SESIÓN?</h4>
+        <div class="feedback-buttons">
+          <button class="feedback-btn" data-value="1">😓 Muy dura</button>
+          <button class="feedback-btn" data-value="2">😐 Justa</button>
+          <button class="feedback-btn" data-value="3">🙂 Bien</button>
+          <button class="feedback-btn" data-value="4">🔥 Excelente</button>
+        </div>
+      </div>
+      <button class="close-btn" onclick="cerrarModalSesion()">[ CERRAR ]</button>
+    </div>
+  </div>
+
+  <div id="premiumOverlay" onclick="cerrarPremiumModal()"></div>
+  <div id="premiumModal">
+    <h2>✨ RI5 PREMIUM</h2>
+    <p>✔ Planes de entrenamiento de hasta 12 meses</p>
+    <p>✔ Prioridad en soporte</p>
+    <p>✔ Acceso a contenido exclusivo</p>
+    <p>✔ Y mucho más...</p>
+    <p>🔗 Contacta por Instagram <strong>@coachjoaquinpeinado</strong></p>
+    <button onclick="cerrarPremiumModal()">CERRAR</button>
+  </div>
+
+  <div id="welcomeOverlay"></div>
+  <div id="welcomeModal">
+    <h2>✨ BIENVENIDO A RI5</h2>
+    <p>✔ Calcula tus zonas de entrenamiento</p>
+    <p>✔ Crea planes personalizados (premium)</p>
+    <p>✔ Historial de cálculos</p>
+    <p>✔ Soporte directo con el administrador</p>
+    <button onclick="cerrarWelcomeModal()">ENTENDIDO</button>
+  </div>
+
+  <div id="resetOverlay"></div>
+  <div id="resetModal">
+    <h2>🔐 RECUPERAR CONTRASEÑA</h2>
+    <p class="reset-description">Introduce tu correo electrónico y te enviaremos instrucciones para restablecer tu contraseña</p>
+    <input type="email" id="resetEmail" placeholder="> TU EMAIL_">
+    <div class="error-message" id="resetError"></div>
+    <div class="reset-buttons">
+      <button class="reset-send" onclick="enviarEmailRecuperacion()">[ ENVIAR INSTRUCCIONES ]</button>
+      <button class="reset-cancel" onclick="cerrarResetModal()">CANCELAR</button>
+    </div>
+  </div>
+
+  <div id="modalEditarPerfil" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:20px; z-index:20003; max-width:500px; width:90%; pointer-events:auto; box-shadow:var(--shadow-lg);">
+    <h3 style="margin:0 0 16px 0; text-align:center; color:var(--accent-blue); font-size:22px; letter-spacing:1px; font-weight:400;">✏️ EDITAR PERFIL</h3>
+    <div style="text-align:center; margin-bottom:16px;">
+      <div id="currentPhotoPreview" style="display:flex; justify-content:center; margin-bottom:8px;"></div>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button type="button" class="btn-amigo" onclick="Profile.seleccionarFoto()" style="background:transparent; border-color:var(--border-color);">📷 CAMBIAR FOTO</button>
+        <button type="button" class="btn-amigo eliminar" onclick="Profile.eliminarFoto()" style="background:transparent;">🗑️ ELIMINAR</button>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">📝 BIOGRAFÍA</label><input type="text" id="editBio" placeholder="Ej. Corredor apasionado" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"></div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">📍 CIUDAD</label><input type="text" id="editCity" placeholder="Ej. Madrid" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"></div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">🎂 EDAD (años)</label><input type="number" id="editAge" placeholder="Ej. 35" min="14" max="85" step="1" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"></div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">⚥ GÉNERO</label><select id="editGender" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"><option value="male">Hombre</option><option value="female">Mujer</option><option value="other">Otro</option></select></div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">⚖️ PESO (kg)</label><input type="number" id="editWeight" placeholder="Ej. 70" step="0.1" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"></div>
+    <div style="margin-bottom:12px;"><label style="display:block; margin-bottom:4px; color:var(--text-secondary); font-size:12px; font-weight:400;">📏 ALTURA (m)</label><input type="number" id="editHeight" placeholder="Ej. 175" step="1" style="width:100%; padding:0 16px; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:10px; color:var(--text-primary); font-size:15px; box-sizing:border-box; height:48px; line-height:48px;"></div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:16px;">
+      <button class="action-button" onclick="Profile.guardarPerfil()" style="flex:1; margin:0; height:48px; border-radius:10px; background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-weight:350; cursor:pointer; transition:all 0.2s;">GUARDAR</button>
+      <button class="action-button" onclick="Profile.cerrarModal()" style="flex:1; margin:0; height:48px; border-radius:10px; background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-weight:350; cursor:pointer; transition:all 0.2s;">CANCELAR</button>
+    </div>
+  </div>
+  <div id="modalEditarPerfilOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20002; pointer-events:auto; display:none;" onclick="Profile.cerrarModal()"></div>
+
+  <!-- LOGIN PAGE -->
+  <div class="wrapper" id="loginPage" style="display: none;">
+    <div class="card">
+      <div class="app-header"><div class="header-left"><button class="theme-toggle" onclick="toggleTheme(this)" id="themeToggleLogin">💡</button></div><h1>RI5</h1><div class="header-right"></div></div>
+      <p style="color: var(--text-secondary); margin:var(--space-md) 0; text-align:center;">> SISTEMA DE ACCESO_</p>
+      <div class="auth-tabs"><button class="auth-tab active" onclick="switchAuthTab('login')">[LOGIN]</button><button class="auth-tab" onclick="switchAuthTab('register')">[REGISTRO]</button></div>
+      <div id="loginForm" class="auth-form active">
+        <input type="email" id="loginEmail" placeholder="> CORREO ELECTRÓNICO_">
+        <div class="password-wrapper"><input type="password" id="loginPassword" placeholder="> CONTRASEÑA_"><span class="password-toggle" onclick="togglePassword('loginPassword', this)">ver</span></div>
+        <div class="error-message" id="loginError"></div>
+        <button class="button-main" id="loginBtn" onclick="loginUser()">[ ACCEDER ]</button>
+        <button class="action-button" style="margin-top:var(--space-xs);" onclick="abrirResetModal()">🔐 ¿OLVIDASTE TU CONTRASEÑA?</button>
+      </div>
+      <div id="registerForm" class="auth-form">
+        <input type="text" id="regUsername" placeholder="> NUEVO USUARIO_">
+        <input type="email" id="regEmail" placeholder="> CORREO ELECTRÓNICO_">
+        <div class="password-wrapper"><input type="password" id="regPassword" placeholder="> NUEVA CONTRASEÑA_"><span class="password-toggle" onclick="togglePassword('regPassword', this)">ver</span></div>
+        <div class="error-message" id="registerError"></div>
+        <button class="button-main" id="registerBtn" onclick="registerUser()">[ REGISTRARSE ]</button>
+      </div>
+      <div id="dailyTip" class="curiosity" onclick="changeDailyTip()"><span>> CONSEJO DEL DÍA_</span><small>// pulsa para nuevo consejo</small></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE VERIFICACIÓN DE EMAIL -->
+  <div class="wrapper" id="verificationPage" style="display: none;">
+    <div class="card">
+      <div class="app-header"><div class="header-left"></div><h1>RI5</h1><div class="header-right"></div></div>
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 64px; margin: 20px 0;">📧</div>
+        <h2>VERIFICA TU CORREO</h2>
+        <p style="margin: 20px 0; color: var(--text-secondary);">Hemos enviado un enlace de verificación a:<br><strong id="verificationEmailDisplay"></strong></p>
+        <p style="margin: 20px 0; font-size: 14px;">Revisa tu bandeja de entrada y haz clic en el enlace.<br>Si no lo encuentras, revisa la carpeta de spam.</p>
+        <button class="action-button" id="resendVerificationBtn" onclick="reenviarVerificacion()">📤 REENVIAR CORREO</button>
+        <button class="action-button" onclick="verificarAhora()" style="margin-top: 10px;">✅ YA HE VERIFICADO</button>
+        <button class="action-button btn-delete" onclick="logoutUser()" style="margin-top: 20px;">CERRAR SESIÓN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div class="wrapper" id="mainContent" style="display:none;">
+    <div class="card">
+      <div class="app-header">
+        <div class="header-left"><button class="theme-toggle" onclick="toggleTheme(this)" id="themeToggle">💡</button></div>
+        <h1 id="ri5Title" onclick="showPremiumBenefits()" role="button" tabindex="0">RI5</h1>
+        <div class="header-right"></div>
+      </div>
+      <div class="user-name-display" id="userNameDisplay"></div>
+      <p style="color: var(--text-secondary); margin:0 0 var(--space-md) 0; text-align:center; font-size:var(--text-sm);" id="userWelcome"></p>
+      <div id="calculoCounter" class="calculo-limit-msg" style="display:none;"></div>
+      
+      <div class="tabs-container">
+        <!-- ENTRENO -->
+        <div id="tab-entreno" class="tab-content active">
+          <h2>> ZONAS DE ENTRENO_</h2>
+          <input id="name" placeholder="> NOMBRE_" readonly disabled>
+          <input id="age" type="number" min="14" max="85" placeholder="> EDAD_">
+          <input id="fcReposo" type="number" min="30" max="100" placeholder="> FC EN REPOSO (opcional)">
+          <input id="time" placeholder="> 6km_ (MM:SS) · ÚLTIMA MARCA">
+          <button class="button-main" id="calcBtn" disabled onclick="startCalcWithScroll()">[ CALCULAR ]</button>
+          <div class="curiosity" id="curiosity" onclick="changeConsejo()"><span>> CONSEJO_</span><small>// pulsa para nuevo consejo</small></div>
+          <div id="results"></div>
+        </div>
+
+        <!-- PLAN -->
+        <div id="tab-plan" class="tab-content">
+          <h2>> CREADOR DE PLANES_</h2>
+          <button class="action-button" style="border-color: var(--zone-5);" onclick="window.open('https://www.instagram.com/coachjoaquinpeinado', '_blank')">🏆 PLANES A MEDIDA</button>
+          <button class="action-button btn-plan" onclick="toggleCuestionario()" id="nuevoPlanBtn">+ NUEVO PLAN</button>
+          <button class="action-button btn-view" id="historialBtn" onclick="toggleHistorialCalculos()">📋 HISTORIAL</button>
+          <!-- Botón ELIMINAR PLAN eliminado -->
+          <div id="cuestionarioEntreno" style="display:none;">
+            <h3>> CONFIGURACIÓN_</h3>
+            <select id="modalidad"><option value="runner">RUNNER (asfalto)</option><option value="trail">TRAIL (montaña)</option></select>
+            <select id="distObjetivo" onchange="validarOpcionesPlan()">
+              <option value="2k">2 km</option><option value="5k">5 km</option><option value="10k">10 km</option><option value="medio">MEDIA MARATÓN</option><option value="maraton" selected>MARATÓN</option>
+            </select>
+            <div id="info-mensaje-distancia" class="calculo-limit-msg warning-message" style="display:none;"></div>
+            <select id="duracionPlan" onchange="validarOpcionesPlan()">
+              <option value="1">1 MES</option><option value="3" selected>3 MESES</option><option value="6">6 MESES</option><option value="12">12 MESES</option>
+            </select>
+            <div class="dias-semana-label">📅 DÍAS DISPONIBLES PARA ENTRENAR <span class="info-icon" onclick="abrirInfoDias()">ⓘ</span></div>
+            <div class="dias-semana-container" id="diasSemanaContainer"></div>
+            <select id="nivel"><option value="principiante">PRINCIPIANTE</option><option value="intermedio" selected>INTERMEDIO</option><option value="avanzado">AVANZADO (mínimo 5 días)</option></select>
+            <select id="experienciaDistancia" onchange="validarOpcionesPlan()"><option value="si">CON EXPERIENCIA</option><option value="no" selected>PRIMERA VEZ</option></select>
+            <select id="objetivoPrincipal"><option value="acabar">TERMINAR</option><option value="mejorar" selected>MEJORAR</option><option value="competir">COMPETIR</option></select>
+            <select id="diaLargo"><option value="auto" selected>➔ AUTOMÁTICO (RECOMENDADO)</option><option value="1">LUNES</option><option value="2">MARTES</option><option value="3">MIÉRCOLES</option><option value="4">JUEVES</option><option value="5">VIERNES</option><option value="6">SÁBADO</option><option value="7">DOMINGO</option></select>
+            <div class="nota-plan" style="margin-top:8px; font-size:11px; text-align:center;">💡 La tirada larga es la sesión más importante de la semana. Selecciona un día que tengas más tiempo libre y puedas recuperar bien después. Si eliges un día manual, asegúrate de que ese día esté marcado en "DÍAS DISPONIBLES". La opción AUTOMÁTICO es la más recomendada.</div>
+            <button class="action-button btn-save" onclick="generarPlanWithScroll()" id="generarPlanBtn">[ GENERAR PLAN ]</button>
+            <button class="action-button btn-delete" onclick="toggleCuestionario()">[ CANCELAR ]</button>
+          </div>
+          <div id="planesHistorial" class="planes-historial" style="display:none;"><h3>📋 ÚLTIMOS PLANES</h3><div id="planesHistorialContainer"></div></div>
+          <div id="calendarioEntreno" style="display:none;"><h3>> TU PLAN_</h3><div class="nota-plan"><p><strong>Plan personalizado</strong> con periodización profesional</p></div><p id="resumenObjetivo" style="color: var(--accent-gold); margin:var(--space-md) 0; text-align:center;"></p><div class="calendar-grid-container"><div class="calendar-header"><div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div><div>DOM</div></div><div id="calendarioGrid"></div></div><div id="calendarioNavegacion" class="calendario-navegacion" style="display: none;"><button id="calendarioAnterior" onclick="cambiarTrimestre(-1)">◀ ANTERIOR</button><span id="calendarioPagina">PÁGINA 1/4</span><button id="calendarioSiguiente" onclick="cambiarTrimestre(1)">SIGUIENTE ▶</button></div><button class="cerrar-plan-btn" onclick="cerrarPlan()">[ CERRAR PLAN ]</button></div>
+          
+          <!-- Historial de cálculos (toggle) -->
+          <div id="historialCalculosContainer" style="margin-top: var(--space-xl);">
+            <button class="historial-toggle-btn" id="toggleHistorialBtn" onclick="toggleHistorialCalculos()">📊 HISTORIAL DE CÁLCULOS</button>
+            <div id="historialContent" class="historial-content">
+              <div id="historialContainer"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMUNIDAD -->
+        <div id="tab-comunidad" class="tab-content">
+          <h2>> COMUNIDAD_</h2>
+          <div class="comunidad-subtabs">
+            <button class="subtab-button active" data-subtab="amigos">👥 Amigos</button>
+            <button class="subtab-button" data-subtab="muro">📢 Muro</button>
+          </div>
+          <div id="subtab-amigos" class="subtab-content active">
+            <div style="margin-bottom:20px; text-align:center;">
+              <button onclick="compartirApp()" style="background:#25D366; border:none; color:white; font-size:16px; font-weight:bold; padding:12px 20px; border-radius:50px; cursor:pointer; display:inline-flex; align-items:center; gap:10px; width:auto;">
+                <i class="fas fa-share-alt" style="font-size:24px;"></i> Compartir RI5
+              </button>
+            </div>
+            <!-- Pestañas internas de Amigos -->
+            <div class="amigos-tabs">
+              <button class="amigos-tab active" onclick="cambiarAmigosTab('buscar')">🔍 Buscar</button>
+              <button class="amigos-tab" onclick="cambiarAmigosTab('solicitudes')">📨 Solicitudes</button>
+              <button class="amigos-tab" onclick="cambiarAmigosTab('lista')">👥 Mis Amigos</button>
+            </div>
+            <!-- Panel Buscar -->
+            <div id="amigos-buscar" class="amigos-panel active">
+              <div class="buscar-usuario-input"><input type="text" id="buscarAmigosInput" placeholder="> BUSCAR POR NOMBRE DE USUARIO..." oninput="Friends.buscarUsuarios()"></div>
+              <div id="resultadosBusqueda" style="margin-top:20px;"></div>
+              <div style="margin-top:20px;">
+                <h4 style="color: var(--accent-yellow); margin-bottom:10px;">🌐 EXPLORAR USUARIOS</h4>
+                <div id="todosUsuariosList" style="margin-bottom:10px;"></div>
+                <button id="cargarMasUsuariosBtn" class="action-button" style="width:100%; max-width:100%;" onclick="Friends.cargarMasTodosUsuarios()">CARGAR MÁS</button>
+              </div>
+            </div>
+            <!-- Panel Solicitudes -->
+            <div id="amigos-solicitudes" class="amigos-panel">
+              <div class="solicitudes-tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="solicitudes-tab active" data-tab="recibidas" onclick="Friends.cargarSolicitudesRecibidas()">📥 Recibidas</button>
+                <button class="solicitudes-tab" data-tab="enviadas" onclick="Friends.cargarSolicitudesEnviadas()">📤 Enviadas</button>
+              </div>
+              <div id="listaSolicitudesRecibidas"></div>
+              <div id="listaSolicitudesEnviadas" style="display: none;"></div>
+            </div>
+            <!-- Panel Mis Amigos -->
+            <div id="amigos-lista" class="amigos-panel">
+              <h4 style="color: var(--accent-yellow); margin-bottom:10px;">👥 MIS AMIGOS</h4>
+              <div id="listaAmigos"></div>
+            </div>
+          </div>
+          <div id="subtab-muro" class="subtab-content">
+            <p style="text-align:center; margin-bottom:20px; color:var(--text-secondary);">Últimos entrenamientos de la comunidad</p>
+            <div id="wallContainer" class="wall-container"></div>
+          </div>
+        </div>
+
+        <!-- SOPORTE / ADMIN (para admin es solo admin, sin subpestañas) -->
+        <div id="tab-soporte" class="tab-content">
+          <h2 id="soporteTitle">>> SOPORTE_</h2>
+          <div id="soporte-admin-panel" style="display:none;">
+            <h3 style="margin-top: 0;">>> PANEL DE ADMINISTRACIÓN</h3>
+            <div id="adminStats" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap:16px; margin-bottom:24px;">
+              <div class="stat-card" onclick="Admin.mostrarUsuariosPorFiltro('total')" style="cursor:pointer;"><div class="stat-number" id="statTotalUsers">0</div><div class="stat-label">Total usuarios</div></div>
+              <div class="stat-card" onclick="Admin.mostrarUsuariosPorFiltro('premium')" style="cursor:pointer;"><div class="stat-number" id="statPremiumUsers">0</div><div class="stat-label">Premium</div></div>
+              <div class="stat-card" onclick="Admin.mostrarUsuariosPorFiltro('new')" style="cursor:pointer;"><div class="stat-number" id="statNewUsers">0</div><div class="stat-label">Nuevos (7d)</div></div>
+              <div class="stat-card" onclick="Admin.mostrarUsuariosPorFiltro('sessions')" style="cursor:pointer;"><div class="stat-number" id="statSessionsToday">0</div><div class="stat-label">Sesiones hoy</div></div>
+            </div>
+            <div class="admin-filters">
+              <input type="text" id="adminUserSearch" placeholder="Buscar usuario..." style="flex:2; min-width:160px;">
+              <select id="adminFilterPremium"><option value="all">Todos</option><option value="true">Premium</option><option value="false">No premium</option></select>
+              <input type="date" id="adminFilterDateFrom" placeholder="Desde" style="flex:0.8; min-width:120px;">
+              <input type="date" id="adminFilterDateTo" placeholder="Hasta" style="flex:0.8; min-width:120px;">
+              <select id="adminSortBy"><option value="username">Nombre</option><option value="created">Registro</option><option value="premium">Premium</option></select>
+              <button class="refresh-users-btn" onclick="Admin.aplicarFiltros()">Aplicar</button>
+              <button class="refresh-users-btn" onclick="Admin.limpiarFiltros()" style="background:transparent; border-color:var(--border-color);">Limpiar</button>
+            </div>
+            <div style="display: flex; justify-content: center; margin-bottom: 16px;"><button class="refresh-users-btn" id="refreshUsersBtn">Recargar</button></div>
+            <div style="margin-bottom: var(--space-md);"><input type="text" id="adminUserSearch2" placeholder="> BUSCAR USUARIO (username/email)_" oninput="Admin.buscarUsuarios()"></div>
+            <div id="adminUsersList" style="margin-bottom: var(--space-xl);"></div>
+            <button class="action-button" id="loadMoreUsersBtn" onclick="Admin.cargarMasUsuarios()" style="display:none;">CARGAR MÁS USUARIOS</button>
+            <h3>> MENSAJES DE USUARIOS</h3>
+            <div id="adminMessagesList" class="mensajes-container" style="margin-bottom: var(--space-xl);"></div>
+            <button class="action-button" id="loadMoreMessagesBtn" onclick="cargarMasMensajesAdmin()" style="display:none; margin-top: var(--space-md);">📨 CARGAR MÁS MENSAJES</button>
+            <h3>> ENVIAR MENSAJE A TODOS</h3>
+            <textarea id="adminBroadcastText" placeholder="> ESCRIBE EL MENSAJE..."></textarea>
+            <button class="action-button" onclick="Admin.enviarMensajeATodos()">📢 ENVIAR A TODOS</button>
+          </div>
+          <div id="soporte-usuario-panel">
+            <div class="soporte-tabs">
+              <button class="soporte-tab active" onclick="cambiarSoporteTab('recibidos')">📥 RECIBIDOS</button>
+              <button class="soporte-tab" onclick="cambiarSoporteTab('enviados')">📤 ENVIADOS</button>
+            </div>
+            <div id="soporte-recibidos" class="soporte-panel active">
+              <h3>Mensajes del admin</h3>
+              <div id="listaMensajesRecibidos" class="mensajes-container"></div>
+            </div>
+            <div id="soporte-enviados" class="soporte-panel">
+              <h3>Tus mensajes</h3>
+              <div class="nuevo-mensaje">
+                <textarea id="mensajeUsuario" placeholder="> ESCRIBE TU CONSULTA..."></textarea>
+                <button class="send-message-btn" onclick="enviarMensajeUsuario()">📤 ENVIAR</button>
+              </div>
+              <div id="listaMensajesEnviados" class="mensajes-container" style="margin-top:var(--space-md);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PERFIL -->
+        <div id="tab-perfil" class="tab-content">
+          <h2>> MI PERFIL_</h2>
+          <div id="perfilContainer"></div>
+          <button class="action-button" onclick="Profile.abrirModal()">✏️ EDITAR PERFIL</button>
+          <button class="action-button" onclick="eliminarMiCuenta()" style="margin-top: var(--space-md); border-color: var(--zone-5);">🗑️ ELIMINAR MI CUENTA</button>
+          <button class="logout-btn-profile" onclick="logoutUser()">🚪 CERRAR SESIÓN</button>
+          <div id="ultimosEntrenosContainer" style="margin-top: 30px;"></div>
+        </div>
+      </div>
+
+      <!-- ===== BARRA DE NAVEGACIÓN INFERIOR FIJA ===== -->
+      <div class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" data-tab="entreno" id="navEntreno">
+          <span class="nav-icon">🏃</span>
+          <span class="nav-label">Entreno</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="plan" id="navPlan">
+          <span class="nav-icon">📅</span>
+          <span class="nav-label">Plan</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="comunidad" id="navComunidad">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Comunidad</span>
+          <span class="notif-badge hidden" id="comunidadBadge"></span>
+        </button>
+        <button class="bottom-nav-item" data-tab="soporte" id="navSoporte">
+          <span class="nav-icon" id="soporteIcon">💬</span>
+          <span class="nav-label" id="soporteLabel">Soporte</span>
+          <span class="notif-badge hidden" id="soporteBadge"></span>
+        </button>
+        <button class="bottom-nav-item" data-tab="perfil" id="navPerfil">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Perfil</span>
+        </button>
+      </div>
+
+      <!-- MODALES Y OVERLAYS -->
+      <div id="premiumManageModal" style="display: none;">
+        <h3 style="margin: 0 0 var(--space-md) 0; text-align: center;">GESTIONAR PREMIUM</h3>
+        <p id="premiumManageUser" style="margin: 0 0 var(--space-md) 0; text-align: center;"></p>
+        <div class="premium-field"><label for="premiumManageStatus">Estado premium:</label><select id="premiumManageStatus"><option value="true">Sí (activo)</option><option value="false">No (inactivo)</option></select></div>
+        <div class="premium-field"><label for="premiumManageExpiry">Fecha de expiración:</label><input type="date" id="premiumManageExpiry"></div>
+        <div class="premium-buttons">
+          <button class="action-button" style="width: auto; padding: 0 20px; margin: 0; background: transparent; height: 52px;" onclick="Admin.cerrarModalPremium()">CANCELAR</button>
+          <button class="action-button" style="width: auto; padding: 0 20px; margin: 0; background: var(--accent-blue); color: var(--bg-primary); height: 52px;" onclick="Admin.guardarPremium()">GUARDAR</button>
+        </div>
+      </div>
+      <div id="premiumManageOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 99999;" onclick="Admin.cerrarModalPremium()"></div>
+
+      <div id="modalAmigoOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:20002;" onclick="Friends.cerrarModalAmigo()"></div>
+      <div id="modalAmigo" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:20px; z-index:20003; max-width:400px; width:90%; box-shadow:var(--shadow-lg);"><div style="text-align:center;"><h3 style="margin:0 0 16px; color:var(--accent-blue);">PERFIL DE AMIGO</h3><div id="modalAmigoContenido"></div><button class="action-button" onclick="Friends.cerrarModalAmigo()" style="margin-top:16px;">CERRAR</button></div></div>
+
+      <div id="adminUserModal"><div class="admin-modal-content"><div class="admin-modal-header"><h3 id="adminModalTitle">👤 Detalle de usuario</h3><button class="admin-modal-close" onclick="Admin.cerrarModalUsuario()">✕</button></div><div id="adminModalContent"></div></div></div>
+      <div id="adminListModal" style="display:none;"><div class="admin-modal-content"><div class="admin-modal-header"><h3 id="adminListModalTitle">Lista de usuarios</h3><button class="admin-modal-close" onclick="Admin.cerrarListModal()">✕</button></div><div id="adminListModalContent"></div></div></div>
+
+      <div class="footer" id="footer"></div>
+      <div class="logout-container"><button class="logout-button" onclick="logoutUser()">CERRAR SESIÓN</button></div>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas" style="display:none;"></canvas>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  
+  <script src="firebase-config.js"></script>
+  <script src="storage.js"></script>
+  <script src="auth.js"></script>
+  <script src="training.js"></script>
+  <script src="calendar.js"></script>
+  <script src="profile.js"></script>
+  <script src="friends.js"></script>
+  <script src="wall.js"></script>
+  <script src="app.js"></script>
+  <script src="gamification.js"></script>
+  <script src="gps-tracker.js"></script>
+  <script src="gps-track-viewer.js"></script>
+
+  <!-- ==================== CHAT.JS (completo) ==================== -->
+  <script>
+    const Chat = {
+      currentConversationId: null,
+      currentOtherUserId: null,
+      unsubscribeMessages: null,
+
+      async getOrCreateConversation(userId, friendId) {
+        if (!userId || !friendId) return null;
+        const conversationId = [userId, friendId].sort().join('_');
+        const convRef = firebaseServices.db.collection('conversations').doc(conversationId);
+        try {
+          const doc = await convRef.get();
+          if (doc.exists) return conversationId;
+          const [userData, friendData] = await Promise.all([
+            Storage.getUser(userId).catch(() => ({ username: 'Usuario', profile: {} })),
+            Storage.getUser(friendId).catch(() => ({ username: 'Amigo', profile: {} }))
+          ]);
+          const participantsData = {
+            [userId]: { username: userData.username || 'Usuario', photoURL: userData.profile?.photoURL || null },
+            [friendId]: { username: friendData.username || 'Amigo', photoURL: friendData.profile?.photoURL || null }
+          };
+          await convRef.set({
+            participants: [userId, friendId],
+            participantsData,
+            lastMessage: '',
+            lastUpdated: firebaseServices.Timestamp.now(),
+            created: firebaseServices.Timestamp.now()
+          });
+          return conversationId;
+        } catch (error) {
+          console.error('Error en getOrCreateConversation:', error);
+          Utils.showToast('Error al iniciar conversación', 'error');
+          return null;
+        }
+      },
+
+      async sendMessage(conversationId, text) {
+        if (!conversationId || !text.trim()) return false;
+        const senderId = AppState.currentUserId;
+        if (!senderId) return false;
+        try {
+          const messageRef = firebaseServices.db
+            .collection('conversations')
+            .doc(conversationId)
+            .collection('messages')
+            .doc();
+          await messageRef.set({
+            senderId,
+            text: text.trim(),
+            timestamp: firebaseServices.Timestamp.now(),
+            read: false,
+            readBy: [senderId]
+          });
+          await firebaseServices.db
+            .collection('conversations')
+            .doc(conversationId)
+            .update({
+              lastMessage: text.trim(),
+              lastUpdated: firebaseServices.Timestamp.now()
+            });
+          return true;
+        } catch (error) {
+          console.error('Error sending message:', error);
+          Utils.showToast('Error al enviar mensaje', 'error');
+          return false;
+        }
+      },
+
+      async getConversations(userId) {
+        if (!userId) return [];
+        try {
+          const snapshot = await firebaseServices.db
+            .collection('conversations')
+            .where('participants', 'array-contains', userId)
+            .orderBy('lastUpdated', 'desc')
+            .get();
+          const conversations = [];
+          for (const doc of snapshot.docs) {
+            const data = doc.data();
+            const otherId = data.participants.find(id => id !== userId);
+            let otherUser = data.participantsData?.[otherId];
+            if (!otherUser) {
+              const userDoc = await firebaseServices.db.collection('users').doc(otherId).get();
+              otherUser = { username: userDoc.exists ? userDoc.data().username : 'Usuario', photoURL: userDoc.exists ? userDoc.data().profile?.photoURL : null };
+            }
+            conversations.push({
+              id: doc.id,
+              ...data,
+              otherUserId: otherId,
+              otherUsername: Utils.capitalizeUsername(otherUser.username),
+              otherPhotoURL: otherUser.photoURL,
+              unreadCount: 0
+            });
+          }
+          for (const conv of conversations) {
+            const unreadSnapshot = await firebaseServices.db
+              .collection('conversations')
+              .doc(conv.id)
+              .collection('messages')
+              .where('read', '==', false)
+              .where('senderId', '!=', userId)
+              .get();
+            conv.unreadCount = unreadSnapshot.size;
+          }
+          return conversations;
+        } catch (error) {
+          console.error('Error getting conversations:', error);
+          return [];
+        }
+      },
+
+      listenMessages(conversationId, callback) {
+        if (this.unsubscribeMessages) this.unsubscribeMessages();
+        const query = firebaseServices.db
+          .collection('conversations')
+          .doc(conversationId)
+          .collection('messages')
+          .orderBy('timestamp', 'asc');
+        this.unsubscribeMessages = query.onSnapshot(snapshot => {
+          const messages = [];
+          snapshot.forEach(doc => {
+            messages.push({ id: doc.id, ...doc.data() });
+          });
+          if (callback) callback(messages);
+        }, error => console.error('Error listening messages:', error));
+      },
+
+      async markMessagesAsRead(conversationId) {
+        if (!conversationId) return;
+        const userId = AppState.currentUserId;
+        try {
+          const snapshot = await firebaseServices.db
+            .collection('conversations')
+            .doc(conversationId)
+            .collection('messages')
+            .where('read', '==', false)
+            .where('senderId', '!=', userId)
+            .get();
+          if (snapshot.empty) return;
+          const batch = firebaseServices.db.batch();
+          snapshot.forEach(doc => {
+            batch.update(doc.ref, { read: true, readBy: firebaseServices.FieldValue.arrayUnion(userId) });
+          });
+          await batch.commit();
+          console.log(`✅ ${snapshot.size} mensajes marcados como leídos`);
+        } catch (error) {
+          console.error('Error marking messages as read:', error);
+        }
+      },
+
+      async renderConversations(container) {
+        if (!container || !AppState.currentUserId) return;
+        try {
+          const conversations = await this.getConversations(AppState.currentUserId);
+          if (conversations.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px;">No tienes conversaciones. Envía un mensaje a un amigo.</p>';
+            return;
+          }
+          let html = '';
+          for (const conv of conversations) {
+            const unreadClass = conv.unreadCount > 0 ? 'conversacion-no-leida' : '';
+            const nombreClass = conv.unreadCount > 0 ? 'conversacion-nombre-no-leido' : '';
+            const fecha = conv.lastUpdated?.toDate ? conv.lastUpdated.toDate().toLocaleDateString() : '';
+            const avatarHTML = conv.otherPhotoURL
+              ? `<img src="${Utils.escapeHTML(conv.otherPhotoURL)}" class="conversacion-avatar" style="object-fit:cover;">`
+              : `<div class="conversacion-avatar">👤</div>`;
+            const otherUsernameEscaped = Utils.escapeHTML(conv.otherUsername);
+            const lastMessageEscaped = conv.lastMessage ? Utils.escapeHTML(conv.lastMessage) : 'Sin mensajes';
+            const fechaEscaped = Utils.escapeHTML(fecha);
+            html += `
+              <div class="conversacion-item ${unreadClass}" data-conv-id="${conv.id}" data-other-user-id="${conv.otherUserId}" data-other-username="${otherUsernameEscaped}">
+                ${avatarHTML}
+                <div class="conversacion-info">
+                  <div class="conversacion-nombre ${nombreClass}">${otherUsernameEscaped}</div>
+                  <div class="conversacion-preview">${lastMessageEscaped}</div>
+                </div>
+                <div class="conversacion-fecha">${fechaEscaped}</div>
+                ${conv.unreadCount > 0 ? `<div class="conversacion-badge">${conv.unreadCount}</div>` : ''}
+              </div>
+            `;
+          }
+          container.innerHTML = html;
+          container.querySelectorAll('.conversacion-item').forEach(el => {
+            el.addEventListener('click', () => {
+              this.openChat(el.dataset.convId, el.dataset.otherUserId, el.dataset.otherUsername);
+            });
+          });
+          const totalUnread = conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0);
+          if (AppState) {
+            AppState.mensajesAmigosNoLeidos = totalUnread;
+            AppState.actualizarBadgeChat();
+          }
+        } catch (error) {
+          console.error('Error rendering conversations:', error);
+          container.innerHTML = '<p style="text-align:center; color:var(--zone-5);">Error al cargar conversaciones</p>';
+        }
+      },
+
+      openChat(conversationId, otherUserId, otherUsername) {
+        let modal = document.getElementById('chatModal');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'chatModal';
+          modal.className = 'modal';
+          modal.innerHTML = `
+            <div class="modal-content" id="chatModalContent">
+              <div class="chat-header">
+                <span id="chatFriendName"></span>
+                <button class="close-chat" id="closeChatBtn">✕</button>
+              </div>
+              <div id="chatMessages" class="chat-messages"></div>
+              <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+                <button class="send-btn" id="sendChatBtn">📤</button>
+                <button class="clear-chat-btn" id="clearChatBtn">🗑️</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          document.getElementById('closeChatBtn').addEventListener('click', () => this.closeChat());
+          document.getElementById('sendChatBtn').addEventListener('click', () => this.sendCurrentMessage());
+          document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.sendCurrentMessage();
+          });
+          document.getElementById('clearChatBtn').addEventListener('click', async () => {
+            if (confirm('¿Seguro que quieres borrar todos los mensajes de esta conversación? Esta acción no se puede deshacer.')) {
+              await this.clearChat(this.currentConversationId);
+              await this.loadAndRenderMessages(this.currentConversationId, this.currentOtherUserId);
+              await firebaseServices.db.collection('conversations').doc(this.currentConversationId).update({
+                lastMessage: '',
+                lastUpdated: firebaseServices.Timestamp.now()
+              }).catch(e => console.warn('No se pudo actualizar lastMessage', e));
+              Utils.showToast('Chat vaciado correctamente', 'success');
+            }
+          });
+        } else {
+          const clearBtn = document.getElementById('clearChatBtn');
+          if (clearBtn) {
+            const newClearBtn = clearBtn.cloneNode(true);
+            clearBtn.parentNode.replaceChild(newClearBtn, clearBtn);
+            newClearBtn.addEventListener('click', async () => {
+              if (confirm('¿Seguro que quieres borrar todos los mensajes de esta conversación? Esta acción no se puede deshacer.')) {
+                await this.clearChat(this.currentConversationId);
+                await this.loadAndRenderMessages(this.currentConversationId, this.currentOtherUserId);
+                await firebaseServices.db.collection('conversations').doc(this.currentConversationId).update({
+                  lastMessage: '',
+                  lastUpdated: firebaseServices.Timestamp.now()
+                }).catch(e => console.warn(e));
+                Utils.showToast('Chat vaciado correctamente', 'success');
+              }
+            });
+          }
+        }
+        const modalElement = document.getElementById('chatModal');
+        const chatFriendName = document.getElementById('chatFriendName');
+        const chatMessages = document.getElementById('chatMessages');
+        chatFriendName.textContent = otherUsername;
+        chatMessages.innerHTML = '';
+        modalElement.style.display = 'flex';
+        this.currentConversationId = conversationId;
+        this.currentOtherUserId = otherUserId;
+        
+        this.markMessagesAsRead(conversationId).then(() => {
+          const activeTab = document.querySelector('.tab-button.active')?.textContent.toLowerCase();
+          const activeAmigosTab = document.querySelector('.amigos-tab.active')?.textContent.toLowerCase();
+          if (activeTab === 'amigos' && activeAmigosTab === 'mis amigos') {
+            if (window.Friends) Friends.cargarListaAmigos();
+          }
+          if (window.Chat) Chat.updateUnreadBadge();
+          // También actualizar badge de soporte por si hay mensajes de admin
+          if (window.actualizarBadgeSoporte) actualizarBadgeSoporte();
+        });
+        
+        this.listenMessages(conversationId, (updatedMessages) => {
+          this.renderMessagesGrouped(updatedMessages, otherUserId);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+        this.loadAndRenderMessages(conversationId, otherUserId);
+      },
+
+      async clearChat(conversationId) {
+        if (!conversationId) return;
+        try {
+          const snapshot = await firebaseServices.db
+            .collection('conversations')
+            .doc(conversationId)
+            .collection('messages')
+            .get();
+          const batch = firebaseServices.db.batch();
+          snapshot.forEach(doc => {
+            batch.delete(doc.ref);
+          });
+          await batch.commit();
+        } catch (error) {
+          console.error('Error clearing chat:', error);
+          Utils.showToast('Error al vaciar el chat', 'error');
+        }
+      },
+
+      async loadAndRenderMessages(conversationId, otherUserId) {
+        const snapshot = await firebaseServices.db
+          .collection('conversations')
+          .doc(conversationId)
+          .collection('messages')
+          .orderBy('timestamp', 'asc')
+          .get();
+        const messages = [];
+        snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+        this.renderMessagesGrouped(messages, otherUserId);
+        const chatMessages = document.getElementById('chatMessages');
+        if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+      },
+
+      renderMessagesGrouped(messages, otherUserId) {
+        const container = document.getElementById('chatMessages');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!messages.length) return;
+        const grouped = this.groupMessagesByDate(messages);
+        for (const [dateLabel, msgs] of Object.entries(grouped)) {
+          const dateDiv = document.createElement('div');
+          dateDiv.className = 'chat-date-separator';
+          dateDiv.textContent = dateLabel;
+          container.appendChild(dateDiv);
+          msgs.forEach(msg => {
+            const msgElement = this.createMessageElement(msg, otherUserId);
+            container.appendChild(msgElement);
+          });
+        }
+      },
+
+      groupMessagesByDate(messages) {
+        const groups = {};
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        messages.forEach(msg => {
+          let timestamp = msg.timestamp;
+          if (timestamp && timestamp.toDate) timestamp = timestamp.toDate();
+          else if (timestamp) timestamp = new Date(timestamp);
+          else timestamp = new Date();
+          let dateLabel;
+          if (timestamp.toDateString() === today.toDateString()) dateLabel = 'Hoy';
+          else if (timestamp.toDateString() === yesterday.toDateString()) dateLabel = 'Ayer';
+          else {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            dateLabel = timestamp.toLocaleDateString(undefined, options);
+          }
+          if (!groups[dateLabel]) groups[dateLabel] = [];
+          groups[dateLabel].push(msg);
+        });
+        return groups;
+      },
+
+      createMessageElement(msg, otherUserId) {
+        const isSent = msg.senderId === AppState.currentUserId;
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${isSent ? 'sent' : 'received'}`;
+        const textSpan = document.createElement('div');
+        textSpan.className = 'message-text';
+        textSpan.textContent = msg.text;
+        const footerSpan = document.createElement('div');
+        footerSpan.className = 'message-footer';
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        let timestamp = msg.timestamp;
+        if (timestamp && timestamp.toDate) timestamp = timestamp.toDate();
+        else if (timestamp) timestamp = new Date(timestamp);
+        else timestamp = new Date();
+        const hours = timestamp.getHours().toString().padStart(2, '0');
+        const minutes = timestamp.getMinutes().toString().padStart(2, '0');
+        timeSpan.textContent = `${hours}:${minutes}`;
+        if (isSent) {
+          const statusSpan = document.createElement('span');
+          statusSpan.className = 'message-status';
+          const isRead = msg.readBy && msg.readBy.includes(otherUserId);
+          if (isRead) {
+            statusSpan.innerHTML = '✓✓';
+            statusSpan.title = 'Visto';
+            statusSpan.classList.add('read');
+          } else {
+            statusSpan.innerHTML = '✓';
+            statusSpan.title = 'Enviado';
+            statusSpan.classList.add('sent');
+          }
+          footerSpan.appendChild(statusSpan);
+        }
+        footerSpan.appendChild(timeSpan);
+        messageDiv.appendChild(textSpan);
+        messageDiv.appendChild(footerSpan);
+        return messageDiv;
+      },
+
+      async sendCurrentMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text || !this.currentConversationId) return;
+        const success = await this.sendMessage(this.currentConversationId, text);
+        if (success) {
+          input.value = '';
+        }
+      },
+
+      closeChat() {
+        if (this.unsubscribeMessages) {
+          this.unsubscribeMessages();
+          this.unsubscribeMessages = null;
+        }
+        const modal = document.getElementById('chatModal');
+        if (modal) modal.style.display = 'none';
+        this.currentConversationId = null;
+        this.currentOtherUserId = null;
+      },
+
+      async startChatWithFriend(friendId, friendUsername) {
+        if (!AppState.currentUserId || !friendId) return;
+        const conversationId = await this.getOrCreateConversation(AppState.currentUserId, friendId);
+        if (conversationId) this.openChat(conversationId, friendId, friendUsername);
+      },
+
+      async updateUnreadBadge() {
+        if (!AppState.currentUserId) return;
+        try {
+          const conversations = await this.getConversations(AppState.currentUserId);
+          const totalUnread = conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0);
+          if (AppState) {
+            AppState.mensajesAmigosNoLeidos = totalUnread;
+            AppState.actualizarBadgeChat();
+          }
+        } catch (error) {
+          console.error('Error updating unread badge:', error);
+        }
+      }
+    };
+    window.Chat = Chat;
+  </script>
+
+  <!-- ==================== INYECCIÓN DE COLOR NARANJA EN "MIS AMIGOS" ==================== -->
+  <script>
+    const originalActualizarBadgeChat = AppState.actualizarBadgeChat;
+    AppState.actualizarBadgeChat = function() {
+      // Mostrar badge en la barra inferior (Comunidad)
+      const badge = document.getElementById('comunidadBadge');
+      if (badge) {
+        const count = this.mensajesAmigosNoLeidos || 0;
+        if (count > 0) {
+          badge.textContent = count > 9 ? '9+' : count;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+      // También en la pestaña superior (si existe)
+      const tab = document.querySelector('.tab-button[onclick="switchTab(\'amigos\')"]');
+      if (tab) {
+        if (this.mensajesAmigosNoLeidos > 0) {
+          tab.classList.add('chat-unread');
+          tab.setAttribute('data-chat-count', this.mensajesAmigosNoLeidos);
+        } else {
+          tab.classList.remove('chat-unread');
+          tab.removeAttribute('data-chat-count');
+        }
+      }
+      const listaTab = document.querySelector('.amigos-tab[onclick*="lista"]');
+      if (listaTab) {
+        if (this.mensajesAmigosNoLeidos > 0) {
+          listaTab.style.color = '#E67E22';
+          listaTab.style.fontWeight = '600';
+        } else {
+          listaTab.style.color = '';
+          listaTab.style.fontWeight = '';
+        }
+      }
+    };
+
+    const originalCargarListaAmigos = Friends.cargarListaAmigos;
+    Friends.cargarListaAmigos = async function() {
+      await originalCargarListaAmigos.call(this);
+      try {
+        if (!AppState.currentUserId) return;
+        const conversations = await Chat.getConversations(AppState.currentUserId);
+        const unreadFriendIds = new Set();
+        conversations.forEach(conv => {
+          if (conv.unreadCount > 0 && conv.otherUserId) {
+            unreadFriendIds.add(conv.otherUserId);
+          }
+        });
+        const container = document.getElementById('listaAmigos');
+        if (!container) return;
+        const items = container.querySelectorAll('.resultado-busqueda');
+        items.forEach(item => {
+          const uid = item.querySelector('.resultado-info')?.getAttribute('data-uid');
+          if (uid && unreadFriendIds.has(uid)) {
+            const nombreEl = item.querySelector('.resultado-nombre');
+            const usernameEl = item.querySelector('.resultado-username');
+            if (nombreEl) nombreEl.style.color = '#E67E22';
+            if (usernameEl) usernameEl.style.color = '#E67E22';
+          }
+        });
+      } catch (e) {
+        console.warn('Error al colorear amigos con mensajes no leídos:', e);
+      }
+    };
+  </script>
+
+  <!-- ==================== EXTENSIÓN PARA TIEMPO REAL ABSOLUTO EN LA LISTA DE AMIGOS ==================== -->
+  <script>
+    (function() {
+      const originalIniciarListeners = AppState.iniciarListeners;
+      let extraUnsubscribe = null;
+
+      AppState.iniciarListeners = function() {
+        if (originalIniciarListeners) originalIniciarListeners.call(this);
+        if (this.currentUserId) {
+          if (extraUnsubscribe) extraUnsubscribe();
+          extraUnsubscribe = firebaseServices.db
+            .collection('conversations')
+            .where('participants', 'array-contains', this.currentUserId)
+            .onSnapshot(async () => {
+              const activeTab = document.querySelector('.tab-button.active')?.textContent.toLowerCase();
+              const activeAmigosTab = document.querySelector('.amigos-tab.active')?.textContent.toLowerCase();
+              if (activeTab === 'amigos' && activeAmigosTab === 'mis amigos') {
+                if (window.Friends) await Friends.cargarListaAmigos();
+              }
+              if (window.Chat) await Chat.updateUnreadBadge();
+            }, error => console.error('Error en listener extra de conversaciones:', error));
+        }
+      };
+
+      const originalDetenerListeners = AppState.detenerListeners;
+      AppState.detenerListeners = function() {
+        if (originalDetenerListeners) originalDetenerListeners.call(this);
+        if (extraUnsubscribe) {
+          extraUnsubscribe();
+          extraUnsubscribe = null;
+        }
+      };
+    })();
+  </script>
+
+  <!-- ==================== FRIENDS.JS CON REFRESCO DE BADGES AL ACEPTAR/RECHAZAR ==================== -->
+  <script>
+    const originalAceptar = Friends.aceptarSolicitud;
+    Friends.aceptarSolicitud = async function(requestId, fromUid, toUid) {
+      await originalAceptar.call(this, requestId, fromUid, toUid);
+      if (AppState) {
+        const { recibidas } = await this.obtenerSolicitudesPendientes();
+        AppState.solicitudesPendientesCount = recibidas.length;
+        AppState.actualizarBadgeSolicitudes();
+      }
+      const activeTab = document.querySelector('.tab-button.active')?.textContent.toLowerCase();
+      if (activeTab === 'amigos') {
+        const activeAmigosTab = document.querySelector('.amigos-tab.active')?.textContent.toLowerCase();
+        if (activeAmigosTab === 'solicitudes') {
+          await this.cargarSolicitudesRecibidas();
+        } else if (activeAmigosTab === 'mis amigos') {
+          await this.cargarListaAmigos();
+        }
+      }
+    };
+
+    const originalRechazar = Friends.rechazarSolicitud;
+    Friends.rechazarSolicitud = async function(requestId) {
+      await originalRechazar.call(this, requestId);
+      if (AppState) {
+        const { recibidas } = await this.obtenerSolicitudesPendientes();
+        AppState.solicitudesPendientesCount = recibidas.length;
+        AppState.actualizarBadgeSolicitudes();
+      }
+      const activeTab = document.querySelector('.tab-button.active')?.textContent.toLowerCase();
+      if (activeTab === 'amigos') {
+        const activeAmigosTab = document.querySelector('.amigos-tab.active')?.textContent.toLowerCase();
+        if (activeAmigosTab === 'solicitudes') {
+          await this.cargarSolicitudesRecibidas();
+        }
+      }
+    };
+
+    const originalCancelar = Friends.cancelarSolicitud;
+    Friends.cancelarSolicitud = async function(requestId) {
+      await originalCancelar.call(this, requestId);
+      if (AppState) {
+        AppState.actualizarBadgeSolicitudes();
+      }
+      const activeTab = document.querySelector('.tab-button.active')?.textContent.toLowerCase();
+      if (activeTab === 'amigos') {
+        const activeAmigosTab = document.querySelector('.amigos-tab.active')?.textContent.toLowerCase();
+        if (activeAmigosTab === 'solicitudes') {
+          await this.cargarSolicitudesEnviadas();
+        }
+      }
+    };
+  </script>
+
+  <!-- ==================== ADMIN Y OTRAS FUNCIONES ==================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const refreshBtn = document.getElementById('refreshUsersBtn');
+      if (refreshBtn) refreshBtn.addEventListener('click', () => { if (AppState.isAdmin) { Admin.cargarUsuarios(true); Admin.cargarEstadisticas(); Utils.showToast('Usuarios actualizados', 'success'); } else Utils.showToast('No tienes permisos de administrador', 'error'); });
+    });
+  </script>
+
+  <script>
+    async function checkPremiumExpiry() {
+      try {
+        const snapshot = await firebaseServices.db.collection('users').get();
+        const batch = firebaseServices.db.batch();
+        let updated = false;
+        const now = new Date();
+        snapshot.forEach(doc => {
+          const userData = doc.data();
+          if (userData.premium === true && userData.expires) {
+            const expiryDate = new Date(userData.expires);
+            if (expiryDate < now) {
+              batch.update(doc.ref, { premium: false });
+              updated = true;
+            }
+          }
+        });
+        if (updated) {
+          await batch.commit();
+          console.log('✅ Premium caducado actualizado para algunos usuarios');
+          if (AppState && AppState.currentUserId) {
+            const currentUserDoc = await firebaseServices.db.collection('users').doc(AppState.currentUserId).get();
+            if (currentUserDoc.exists) {
+              const isPremium = currentUserDoc.data().premium || false;
+              if (AppState.isPremium !== isPremium) {
+                AppState.isPremium = isPremium;
+                if (typeof AppState.actualizarBadgePremium === 'function') AppState.actualizarBadgePremium();
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking premium expiry:', error);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      checkPremiumExpiry();
+      setInterval(checkPremiumExpiry, 3600000);
+    });
+  </script>
+
+  <script>
+    async function compartirApp() {
+      const urlLarga = window.location.href;
+      const titulo = "RI5 - Running Intelligence";
+      const descripcion = "🏃‍♂️ Entrena por zonas de frecuencia cardíaca, genera planes personalizados y conecta con una comunidad de corredores. ¡Todo gratis!";
+      function abrirWhatsApp(mensaje) {
+        const mensajeCodificado = encodeURIComponent(mensaje);
+        window.open(`https://wa.me/?text=${mensajeCodificado}`, '_blank');
+      }
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: titulo, text: descripcion, url: urlLarga });
+          return;
+        } catch (error) { console.log('Web Share API cancelada o falló'); }
+      }
+      const mensaje = `*${titulo}*\n\n${descripcion}\n\n👉 ${urlLarga}`;
+      abrirWhatsApp(mensaje);
+    }
+    window.compartirApp = compartirApp;
+  </script>
+
+  <script>
+    window.abrirInfoDias = function() {
+      document.getElementById('infoDiasOverlay').classList.add('active');
+      document.getElementById('infoDiasModal').classList.add('active');
+    };
+    window.cerrarInfoDias = function() {
+      document.getElementById('infoDiasOverlay').classList.remove('active');
+      document.getElementById('infoDiasModal').classList.remove('active');
+    };
+    document.getElementById('infoDiasOverlay')?.addEventListener('click', cerrarInfoDias);
+
+    const landingShown = localStorage.getItem('ri5_landing_shown');
+    const landing = document.getElementById('landingContainer');
+    const loginPage = document.getElementById('loginPage');
+    const mainContent = document.getElementById('mainContent');
+    const verificationPage = document.getElementById('verificationPage');
+    if (!landingShown) {
+      landing?.classList.remove('hide-landing');
+      if (loginPage) loginPage.style.display = 'none';
+      if (mainContent) mainContent.style.display = 'none';
+      if (verificationPage) verificationPage.style.display = 'none';
+    } else {
+      landing?.classList.add('hide-landing');
+      if (loginPage) loginPage.style.display = 'flex';
+      if (mainContent) mainContent.style.display = 'none';
+      if (verificationPage) verificationPage.style.display = 'none';
+    }
+    document.getElementById('enterAppBtn')?.addEventListener('click', function() {
+      landing?.classList.add('hide-landing');
+      if (loginPage) loginPage.style.display = 'flex';
+      if (mainContent) mainContent.style.display = 'none';
+      if (verificationPage) verificationPage.style.display = 'none';
+      localStorage.setItem('ri5_landing_shown', 'true');
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function initSolicitudesTabs() {
+      const recibidasDiv = document.getElementById('listaSolicitudesRecibidas');
+      const enviadasDiv = document.getElementById('listaSolicitudesEnviadas');
+      const tabs = document.querySelectorAll('.solicitudes-tab');
+      if (!tabs.length || !recibidasDiv || !enviadasDiv) return;
+      const handler = function() {
+        const target = this.dataset.tab;
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        if (target === 'recibidas') {
+          recibidasDiv.style.display = 'block';
+          enviadasDiv.style.display = 'none';
+          if (typeof Friends !== 'undefined' && Friends.cargarSolicitudesRecibidas) Friends.cargarSolicitudesRecibidas();
+        } else {
+          recibidasDiv.style.display = 'none';
+          enviadasDiv.style.display = 'block';
+          if (typeof Friends !== 'undefined' && Friends.cargarSolicitudesEnviadas) Friends.cargarSolicitudesEnviadas();
+        }
+      };
+      tabs.forEach(tab => {
+        tab.removeEventListener('click', tab._listener);
+        tab._listener = handler;
+        tab.addEventListener('click', tab._listener);
+      });
+      recibidasDiv.style.display = 'block';
+      enviadasDiv.style.display = 'none';
+      if (typeof Friends !== 'undefined' && Friends.cargarSolicitudesRecibidas) Friends.cargarSolicitudesRecibidas();
+    }
+    document.addEventListener('DOMContentLoaded', initSolicitudesTabs);
+    
+    window.cambiarAmigosTab = function(tab) {
+      const panels = document.querySelectorAll('.amigos-panel');
+      const btns = document.querySelectorAll('.amigos-tab');
+      btns.forEach(btn => btn.classList.remove('active'));
+      panels.forEach(panel => panel.classList.remove('active'));
+      if (tab === 'buscar') {
+        document.getElementById('amigos-buscar').classList.add('active');
+        btns[0].classList.add('active');
+      } else if (tab === 'solicitudes') {
+        document.getElementById('amigos-solicitudes').classList.add('active');
+        btns[1].classList.add('active');
+        initSolicitudesTabs();
+      } else if (tab === 'lista') {
+        document.getElementById('amigos-lista').classList.add('active');
+        btns[2].classList.add('active');
+        if (typeof Friends !== 'undefined' && Friends.cargarListaAmigos) Friends.cargarListaAmigos();
+      }
+    };
+
+    window.toggleHistorialCalculos = function() {
+      const content = document.getElementById('historialContent');
+      const btn = document.getElementById('historialBtn') || document.getElementById('toggleHistorialBtn');
+      const container = document.getElementById('historialCalculosContainer');
+      if (content) {
+        const isOpen = content.classList.contains('abierto');
+        content.classList.toggle('abierto');
+        if (!isOpen) {
+          if (typeof cargarHistorial === 'function') {
+            cargarHistorial();
+          }
+          if (btn) btn.textContent = '📊 OCULTAR HISTORIAL';
+          if (container) {
+            setTimeout(() => {
+              container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+          }
+        } else {
+          if (btn) btn.textContent = '📊 HISTORIAL DE CÁLCULOS';
+        }
+      }
+    };
+
+    window.actualizarBarraActiva = function(tab) {
+      const navItems = document.querySelectorAll('.bottom-nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.tab === tab) {
+          item.classList.add('active');
+        }
+      });
+    };
+
+    const originalSwitchTab = window.switchTab;
+    window.switchTab = function(tab) {
+      if (originalSwitchTab) originalSwitchTab(tab);
+      actualizarBarraActiva(tab);
+    };
+
+    function actualizarBarraSoporteAdmin() {
+      const soporteBtn = document.getElementById('navSoporte');
+      const icon = document.getElementById('soporteIcon');
+      const label = document.getElementById('soporteLabel');
+      const title = document.getElementById('soporteTitle');
+      const adminPanel = document.getElementById('soporte-admin-panel');
+      const userPanel = document.getElementById('soporte-usuario-panel');
+      if (!soporteBtn) return;
+      if (AppState && AppState.isAdmin) {
+        icon.textContent = '⚙️';
+        label.textContent = 'Admin';
+        if (title) title.textContent = '>> ADMINISTRACIÓN_';
+        adminPanel.style.display = 'block';
+        userPanel.style.display = 'none';
+        // Cargar admin si es necesario (ahora se carga siempre desde setCurrentUser)
+        // Ya no es necesario hacerlo aquí porque se carga al establecer el usuario
+      } else {
+        icon.textContent = '💬';
+        label.textContent = 'Soporte';
+        if (title) title.textContent = '>> SOPORTE_';
+        adminPanel.style.display = 'none';
+        userPanel.style.display = 'block';
+      }
+    }
+
+    // Actualizar badge de soporte (mensajes no leídos)
+    function actualizarBadgeSoporte() {
+      const badge = document.getElementById('soporteBadge');
+      if (!badge) return;
+      if (AppState && AppState.mensajesNoLeidos > 0) {
+        const count = AppState.mensajesNoLeidos;
+        badge.textContent = count > 9 ? '9+' : count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+    // Exponer para que Chat pueda llamarla
+    window.actualizarBadgeSoporte = actualizarBadgeSoporte;
+
+    // Sobrescribir actualizarBadgeMensajes para que también actualice la barra
+    const originalActualizarBadgeMensajes = UI.actualizarBadgeMensajes;
+    if (UI) {
+      UI.actualizarBadgeMensajes = function() {
+        if (originalActualizarBadgeMensajes) originalActualizarBadgeMensajes.call(this);
+        actualizarBadgeSoporte();
+      };
+    }
+
+    // Función para actualizar el nombre de usuario
+    function actualizarNombreUsuario() {
+      const display = document.getElementById('userNameDisplay');
+      if (!display) return;
+      let username = '';
+      if (AppState.currentUserData && AppState.currentUserData.username) {
+        username = AppState.currentUserData.username;
+      } else if (AppState.currentUser && AppState.currentUser.username) {
+        username = AppState.currentUser.username;
+      }
+      display.textContent = username ? username.toUpperCase() : '';
+    }
+
+    // Sobrescribir setCurrentUser para actualizar nombre y admin
+    const originalSetCurrentUser = AppState.setCurrentUser;
+    AppState.setCurrentUser = function(uid, email, userData) {
+      if (originalSetCurrentUser) originalSetCurrentUser.call(this, uid, email, userData);
+      // Guardar userData en currentUserData para que esté disponible
+      if (userData && userData.username) {
+        this.currentUserData = userData;
+        // También asegurar que currentUser tenga username
+        if (this.currentUser) {
+          this.currentUser.username = userData.username;
+        }
+      }
+      actualizarNombreUsuario();
+      actualizarBarraSoporteAdmin();
+      actualizarBadgeSoporte();
+      // Si es admin, cargar datos de admin SIEMPRE, independientemente de la pestaña
+      if (this.isAdmin) {
+        // Cargar usuarios y estadísticas en segundo plano
+        if (typeof Admin !== 'undefined' && Admin.cargarUsuarios && Admin.cargarEstadisticas) {
+          Admin.cargarUsuarios(true);
+          Admin.cargarEstadisticas();
+        }
+        // No cambiamos de pestaña automáticamente para mantener la experiencia de usuario
+      }
+    };
+
+    // También actualizar en DOMContentLoaded si ya hay usuario
+    document.addEventListener('DOMContentLoaded', function() {
+      actualizarNombreUsuario();
+      actualizarBarraSoporteAdmin();
+      actualizarBadgeSoporte();
+      
+      // Detectar cambio de usuario para actualizar admin
+      document.addEventListener('userChanged', function() {
+        actualizarBarraSoporteAdmin();
+        actualizarBadgeSoporte();
+        actualizarNombreUsuario();
+        // Si es admin, cargar datos
+        if (AppState && AppState.isAdmin) {
+          if (typeof Admin !== 'undefined' && Admin.cargarUsuarios && Admin.cargarEstadisticas) {
+            Admin.cargarUsuarios(true);
+            Admin.cargarEstadisticas();
+          }
+        }
+      });
+
+      // También al cargar mensajes
+      const originalCargarMensajes = UI.cargarMensajesRecibidos;
+      if (UI) {
+        UI.cargarMensajesRecibidos = async function() {
+          if (originalCargarMensajes) await originalCargarMensajes.call(this);
+          actualizarBadgeSoporte();
+        };
+      }
+      
+      // ===== CORRECCIÓN: CARGAR ADMIN AL ACTIVAR SUBPESTAÑA =====
+      document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.subtab-button');
+        if (btn) {
+          e.preventDefault();
+          const container = btn.closest('.tab-content');
+          if (!container) return;
+          const tabId = container.id.replace('tab-', '');
+          const subtab = btn.dataset.subtab;
+          
+          const buttons = container.querySelectorAll('.subtab-button');
+          const contents = container.querySelectorAll('.subtab-content');
+          buttons.forEach(b => b.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          const content = container.querySelector(`#subtab-${subtab}`);
+          if (content) content.classList.add('active');
+
+          if (tabId === 'comunidad') {
+            if (subtab === 'amigos' && window.Friends) {
+              Friends.cargarTodosUsuarios(true);
+              Friends.cargarListaAmigos();
+            } else if (subtab === 'muro' && window.Wall) {
+              Wall.init();
+            }
+          }
+        }
+      });
+
+      const defaultBtn = document.querySelector('.bottom-nav-item[data-tab="entreno"]');
+      if (defaultBtn) defaultBtn.classList.add('active');
+      
+      // Si al cargar la página el usuario es admin, cargar datos en segundo plano
+      if (AppState && AppState.isAdmin) {
+        if (typeof Admin !== 'undefined' && Admin.cargarUsuarios && Admin.cargarEstadisticas) {
+          Admin.cargarUsuarios(true);
+          Admin.cargarEstadisticas();
+        }
+      }
+      
+      actualizarBarraSoporteAdmin();
+      actualizarBadgeSoporte();
+      actualizarNombreUsuario();
+    });
+  </script>
+
+  <!-- ===== FUNCIONES DE SCROLL ===== -->
+  <script>
+    function forzarScrollTop() {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+
+    function startCalcWithScroll() {
+      if (typeof startCalc === 'function') {
+        startCalc();
+        setTimeout(() => {
+          const results = document.getElementById('results');
+          if (results) {
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 300);
+      } else {
+        console.warn('startCalc no está definida');
+      }
+    }
+
+    function generarPlanWithScroll() {
+      if (typeof generarCalendarioEntreno === 'function') {
+        generarCalendarioEntreno();
+        forzarScrollTop();
+        setTimeout(forzarScrollTop, 100);
+        setTimeout(forzarScrollTop, 400);
+      } else {
+        console.warn('generarCalendarioEntreno no está definida');
+      }
+    }
+  </script>
+
+  <!-- ===== BLOQUE DE ACTUALIZACIÓN DE CACHÉ Y VERSIÓN ===== -->
+  <script>
+    // ===== VERSIÓN DE LA APP =====
+    const APP_VERSION = '2026-06-28-v2';  // Cambia este valor en cada actualización
+
+    // Comprobar si es la primera apertura de esta versión
+    const storedVersion = localStorage.getItem('ri5_app_version');
+    if (storedVersion !== APP_VERSION) {
+      console.log('🔄 Nueva versión detectada. Forzando actualización de caché...');
+      localStorage.setItem('ri5_app_version', APP_VERSION);
+
+      // Si hay Service Worker, forzar su actualización
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+          registrations.forEach(reg => reg.update());
+        }).catch(err => console.warn('Error actualizando SW:', err));
+      }
+
+      // Recargar la página ignorando caché (carga desde el servidor)
+      location.reload(true);
+    }
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { scope: './' })
+          .then(reg => {
+            console.log('✅ Service Worker registrado:', reg.scope);
+            reg.addEventListener('updatefound', () => {
+              const newSW = reg.installing;
+              newSW.addEventListener('statechange', () => {
+                if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                  if (typeof Utils !== 'undefined') {
+                    Utils.showToast('🔄 Nueva versión disponible. Recarga para actualizar.', 'info', 6000);
+                  }
+                }
+              });
+            });
+          })
+          .catch(err => console.warn('⚠️ Error registrando SW:', err));
+      });
+    }
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      console.log('✅ App instalable disponible');
+    });
+
+    window.instalarPWA = async function() {
+      if (!deferredPrompt) {
+        if (typeof Utils !== 'undefined') {
+          Utils.showToast('La app ya está instalada o no es posible en este navegador', 'info');
+        }
+        return;
+      }
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('Respuesta instalación:', outcome);
+      deferredPrompt = null;
+    };
+
+    window.addEventListener('appinstalled', () => {
+      console.log('✅ RI5 instalada como PWA');
+      if (typeof Utils !== 'undefined') {
+        Utils.showToast('✅ RI5 instalada correctamente', 'success');
+      }
+      deferredPrompt = null;
+    });
+  </script>
+
+  <!-- ===== SCRIPTS PARA GESTIONAR LA BARRA INFERIOR Y SUBPESTAÑAS ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Eventos de la barra inferior con redirección a notificaciones
+      document.querySelectorAll('.bottom-nav-item[data-tab]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const tab = this.dataset.tab;
+
+          // Cambiar la pestaña principal
+          if (window.UI && window.UI.switchTab) {
+            window.UI.switchTab(tab);
+          } else {
+            window.switchTab(tab);
+          }
+          actualizarBarraActiva(tab);
+
+          // ===== REDIRECCIÓN A NOTIFICACIONES =====
+          if (tab === 'comunidad') {
+            const badge = document.getElementById('comunidadBadge');
+            const hasNotif = badge && !badge.classList.contains('hidden');
+
+            if (hasNotif) {
+              // Asegurar que la subpestaña "Amigos" está activa
+              const amigosSubtab = document.querySelector('.subtab-button[data-subtab="amigos"]');
+              if (amigosSubtab && !amigosSubtab.classList.contains('active')) {
+                amigosSubtab.click();
+              }
+
+              // Priorizar solicitudes de amistad
+              if (window.AppState && AppState.solicitudesPendientesCount > 0) {
+                // Cambiar a la pestaña "Solicitudes" dentro de Amigos
+                if (typeof cambiarAmigosTab === 'function') {
+                  cambiarAmigosTab('solicitudes');
+                }
+              } else if (window.AppState && AppState.mensajesAmigosNoLeidos > 0) {
+                // Si hay mensajes no leídos, ir a "Mis Amigos" y abrir el primer chat
+                if (typeof cambiarAmigosTab === 'function') {
+                  cambiarAmigosTab('lista');
+                }
+                // Esperar un momento a que se cargue la lista y luego abrir el primer chat no leído
+                setTimeout(async () => {
+                  // Obtener conversaciones y encontrar la primera con mensajes no leídos
+                  if (window.Chat && AppState.currentUserId) {
+                    const conversations = await Chat.getConversations(AppState.currentUserId);
+                    const firstUnread = conversations.find(c => c.unreadCount > 0);
+                    if (firstUnread) {
+                      // Asegurar que la lista de amigos está visible y luego abrir chat
+                      // Usar el mismo método que en el click de la conversación
+                      const container = document.getElementById('listaAmigos');
+                      if (container) {
+                        // Simular clic en la conversación correspondiente
+                        const convItem = container.querySelector(`.conversacion-item[data-conv-id="${firstUnread.id}"]`);
+                        if (convItem) {
+                          convItem.click();
+                        } else {
+                          // Si no está en la lista, abrir directamente con los datos
+                          Chat.openChat(firstUnread.id, firstUnread.otherUserId, firstUnread.otherUsername);
+                        }
+                      } else {
+                        // Si no hay lista, abrir directamente
+                        Chat.openChat(firstUnread.id, firstUnread.otherUserId, firstUnread.otherUsername);
+                      }
+                    }
+                  }
+                }, 500);
+              }
+            }
+          }
+
+          if (tab === 'soporte') {
+            const badge = document.getElementById('soporteBadge');
+            const hasNotif = badge && !badge.classList.contains('hidden');
+
+            if (hasNotif) {
+              // Asegurar que estamos en la pestaña de recibidos (ya es la activa por defecto)
+              // y desplazarnos al primer mensaje no leído
+              const recibidosTab = document.querySelector('.soporte-tab[onclick*="recibidos"]');
+              if (recibidosTab && !recibidosTab.classList.contains('active')) {
+                recibidosTab.click();
+              }
+              // Esperar a que se carguen los mensajes y hacer scroll al primer mensaje no leído
+              setTimeout(() => {
+                const mensajes = document.querySelectorAll('.mensaje-item.nuevo');
+                if (mensajes.length > 0) {
+                  const first = mensajes[0];
+                  first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  // Opcional: resaltar o abrir el mensaje
+                  if (!first.classList.contains('abierto')) {
+                    first.click(); // Abre el mensaje para ver su contenido
+                  }
+                }
+              }, 300);
+            }
+          }
+
+          // Forzar scroll al top
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+          window.scrollTo(0, 0);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
