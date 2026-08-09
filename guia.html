@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Guía RI5 · Cómo funciona la app</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ===== Variables idénticas a las de index.html (modo oscuro = por defecto) ===== */
+  :root {
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #222222;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border-color: #333333;
+    --gold: #c0a060;
+    --zone-1: #8AA0B0;
+    --zone-2: #9BB5A0;
+    --zone-3: #C9A78B;
+    --zone-4: #C99BA5;
+    --zone-5: #9AA5A5;
+    --zone-6: #8A8A8A;
+    --shadow-md: 0 2px 4px rgba(0,0,0,0.55), 0 10px 24px -6px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
+  }
+  /* ===== Modo claro: mismas variables que body.manual-light en index.html ===== */
+  body.manual-light {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #eaeaea;
+    --bg-card: #ffffff;
+    --text-primary: #222222;
+    --text-secondary: #666666;
+    --border-color: #cccccc;
+    --gold: #a0865a;
+    --shadow-md: 0 2px 4px rgba(60,60,67,0.1), 0 10px 24px -6px rgba(60,60,67,0.16), 0 1px 0 rgba(255,255,255,0.7) inset;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:var(--bg-primary); color:var(--text-primary); }
+  body {
+    font-family:'DM Sans', sans-serif;
+    max-width:720px;
+    margin:0 auto;
+    padding:0 0 60px 0;
+    line-height:1.55;
+    transition:background .2s ease, color .2s ease;
+  }
+  h1,h2,h3,.mono { font-family:'Courier New', monospace; }
+
+  /* ===== CABECERA STICKY ===== */
+  #guiaHeader {
+    position:sticky; top:0; z-index:100;
+    background:var(--bg-primary);
+    background:color-mix(in srgb, var(--bg-primary) 94%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border-color);
+    padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+  }
+  #guiaHeader .marca { font-size:14px; font-weight:700; letter-spacing:1px; white-space:nowrap; }
+  #guiaHeader .sub { font-size:9px; color:var(--text-secondary); letter-spacing:2px; margin-top:2px; }
+  .botones-header { display:flex; align-items:center; gap:8px; }
+  #themeToggleBtn, #cerrarGuiaBtn {
+    background:var(--bg-secondary); border:1px solid var(--border-color); color:var(--text-secondary);
+    border-radius:12px; padding:8px 12px; font-size:12px; letter-spacing:1px; cursor:pointer;
+    font-family:'DM Sans', sans-serif;
+  }
+  #themeToggleBtn { padding:8px 10px; font-size:14px; line-height:1; }
+  #cerrarGuiaBtn:active, #themeToggleBtn:active { background:var(--bg-card); }
+
+  /* ===== HERO ===== */
+  .hero { padding:30px 20px 8px; text-align:center; }
+  .hero .marca-grande { font-size:26px; font-weight:700; letter-spacing:1px; margin-bottom:14px; }
+  .hero h1 { font-size:19px; letter-spacing:0.5px; color:var(--text-primary); margin-bottom:8px; font-family:'DM Sans', sans-serif; font-weight:700; }
+  .hero p { color:var(--text-secondary); font-size:13px; max-width:480px; margin:0 auto; }
+
+  /* ===== ÍNDICE ===== */
+  #indice { padding:18px 20px 4px; }
+  #indice .indice-titulo { font-size:11px; letter-spacing:2px; color:var(--text-secondary); margin-bottom:10px; }
+  .indice-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .indice-grid a {
+    display:flex; align-items:center; gap:8px;
+    background:var(--bg-secondary); border:1px solid var(--border-color);
+    border-radius:12px; padding:10px 12px; color:var(--text-primary);
+    text-decoration:none; font-size:12px;
+  }
+  .indice-grid a span.n { color:var(--gold); font-family:'Courier New',monospace; font-size:11px; }
+
+  /* ===== SECCIONES ===== */
+  main { padding:8px 20px 0; }
+  section.bloque {
+    background:var(--bg-secondary);
+    border:1px solid var(--border-color);
+    border-radius:18px;
+    margin-top:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow-md);
+    scroll-margin-top:70px;
+  }
+  section.bloque > summary,
+  section.bloque > .cabecera-fija {
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg-card);
+  }
+  section.bloque > summary::-webkit-details-marker { display:none; }
+  section.bloque > summary .icono { font-size:20px; flex-shrink:0; }
+  section.bloque > summary .titulo { flex:1; }
+  section.bloque > summary .titulo h2 { font-size:14px; letter-spacing:1px; color:var(--gold); }
+  section.bloque > summary .titulo p { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+  section.bloque > summary .flecha { color:var(--text-secondary); font-size:12px; transition:transform .2s ease; }
+  section.bloque[open] > summary .flecha { transform:rotate(180deg); }
+  .contenido { padding:16px 18px 20px; }
+  .contenido h3 { font-size:12px; letter-spacing:1px; color:var(--text-primary); margin:16px 0 8px; }
+  .contenido h3:first-child { margin-top:0; }
+  .contenido p { font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+  .contenido ul { margin:6px 0 10px 18px; }
+  .contenido li { font-size:13px; color:var(--text-secondary); margin-bottom:5px; }
+  .contenido strong { color:var(--text-primary); font-weight:600; }
+
+  /* ===== TABLA DE ZONAS ===== */
+  .tabla-zonas { display:flex; flex-direction:column; gap:6px; margin:10px 0; }
+  .fila-zona {
+    display:grid; grid-template-columns:44px 1fr auto; align-items:center; gap:10px;
+    background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px; padding:8px 12px;
+  }
+  .fila-zona .badge-zona {
+    width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Courier New',monospace; font-weight:bold; font-size:12px; color:#0a0a0a;
+  }
+  .fila-zona .info-zona .nombre { font-size:12px; font-weight:600; color:var(--text-primary); }
+  .fila-zona .info-zona .desc { font-size:11px; color:var(--text-secondary); }
+  .fila-zona .pct { font-size:11px; color:var(--text-secondary); font-family:'Courier New',monospace; text-align:right; white-space:nowrap; }
+
+  /* ===== TARJETAS PEQUEÑAS (niveles, records...) ===== */
+  .grid-cards { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0; }
+  .mini-card {
+    background:var(--bg-card); border:1px solid var(--border-color); border-radius:10px;
+    padding:10px 12px; font-size:12px;
+  }
+  .mini-card .top { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .mini-card .dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .mini-card .top strong { color:var(--text-primary); font-size:12px; }
+  .mini-card .sub { color:var(--text-secondary); font-size:11px; }
+
+  /* ===== INSIGNIAS ===== */
+  .badges-grupo { margin-bottom:14px; }
+  .badges-grupo .grupo-titulo { font-size:11px; letter-spacing:1px; color:var(--gold); margin-bottom:6px; }
+  .badge-row {
+    display:flex; align-items:center; gap:10px;
+    padding:7px 0; border-bottom:1px solid var(--border-color);
+  }
+  .badge-row:last-child { border-bottom:none; }
+  .badge-row .icono { font-size:16px; width:22px; text-align:center; flex-shrink:0; }
+  .badge-row .txt { flex:1; }
+  .badge-row .txt .nombre { font-size:12px; color:var(--text-primary); font-weight:500; }
+  .badge-row .txt .desc { font-size:11px; color:var(--text-secondary); }
+  .badge-row .xp { font-size:10px; color:var(--gold); font-family:'Courier New',monospace; white-space:nowrap; }
+
+  /* ===== AVISOS ===== */
+  .aviso {
+    background:linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, transparent), color-mix(in srgb, var(--gold) 4%, transparent));
+    border:1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+    border-radius:12px; padding:12px 14px; font-size:12px; color:var(--text-primary); margin:10px 0;
+  }
+  .aviso strong { color:var(--gold); }
+
+  footer { text-align:center; padding:30px 20px 10px; color:var(--text-secondary); font-size:11px; }
+  footer a { color:var(--gold); text-decoration:none; }
+</style>
+</head>
+<body>
+
+  <div id="guiaHeader">
+    <div>
+      <div class="marca" id="marcaHeader"></div>
+      <div class="sub">GUÍA DE LA APP</div>
+    </div>
+    <div class="botones-header">
+      <button id="themeToggleBtn" onclick="toggleGuiaTheme(this)">🌙</button>
+      <button id="cerrarGuiaBtn" onclick="if(!window.close()){window.location.href='index.html';}">✕ CERRAR</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="marca-grande" id="marcaHero"></div>
+    <h1>Todo lo que hace RI5, explicado</h1>
+    <p>Esta guía repasa cada función de la app: cómo calcular tus zonas, generar un plan, entender tu carga de entrenamiento, la gamificación y la comunidad. Pulsa cualquier sección para desplegarla.</p>
+  </div>
+
+  <nav id="indice">
+    <div class="indice-titulo">ÍNDICE RÁPIDO</div>
+    <div class="indice-grid">
+      <a href="#s-zonas"><span class="n">01</span> Calcular tus zonas</a>
+      <a href="#s-tablazonas"><span class="n">02</span> Las 6 zonas</a>
+      <a href="#s-plan"><span class="n">03</span> Generar tu plan</a>
+      <a href="#s-feedback"><span class="n">04</span> Marcar sesiones</a>
+      <a href="#s-carga"><span class="n">05</span> Carga y recuperación</a>
+      <a href="#s-gps"><span class="n">06</span> Grabar con GPS</a>
+      <a href="#s-records"><span class="n">07</span> Récords personales</a>
+      <a href="#s-niveles"><span class="n">08</span> Niveles y XP</a>
+      <a href="#s-insignias"><span class="n">09</span> Insignias</a>
+      <a href="#s-zapatillas"><span class="n">10</span> Zapatillas</a>
+      <a href="#s-comunidad"><span class="n">11</span> Comunidad</a>
+      <a href="#s-premium"><span class="n">12</span> RI5 Premium</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- 01 · CALCULAR ZONAS -->
+    <section class="bloque" id="s-zonas">
+      <details>
+        <summary>
+          <span class="icono">🎯</span>
+          <span class="titulo"><h2>01 · CALCULAR TUS ZONAS</h2><p>El primer paso: Perfil → Entreno</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Ve a <strong>Perfil → 🏃 Entreno</strong> y rellena tres datos:</p>
+          <ul>
+            <li><strong>Edad.</strong> Se usa para estimar tu frecuencia cardíaca máxima con la fórmula de <strong>Tanaka</strong> (208 − 0,7 × edad), más precisa que la clásica "220 − edad".</li>
+            <li><strong>FC en reposo (opcional).</strong> Si la indicas, RI5 usa el método <strong>Karvonen</strong> para calcular tu umbral con más precisión, a partir de tu frecuencia cardíaca de reserva. Si la dejas en blanco, se usa un método estándar (92% de tu FC máxima).</li>
+            <li><strong>Tu marca en 6 km</strong> (o el tiempo equivalente más reciente). Es la base para predecir tus ritmos en otras distancias.</li>
+          </ul>
+          <p>Con esos datos, RI5 calcula tu FC máxima, tu umbral de lactato, tus 6 zonas de entrenamiento y una predicción de ritmo para 2, 6, 10, 21 y 42 km (usando la fórmula de Riegel, el modelo de predicción de tiempos más validado en running).</p>
+          <div class="aviso">Los usuarios gratuitos pueden hacer <strong>10 cálculos al mes</strong>. Con Premium, son ilimitados.</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 02 · TABLA DE ZONAS -->
+    <section class="bloque" id="s-tablazonas">
+      <details>
+        <summary>
+          <span class="icono">📊</span>
+          <span class="titulo"><h2>02 · LAS 6 ZONAS DE ENTRENO</h2><p>Qué significa cada una y para qué sirve</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Cada zona se calcula como un % de tu umbral de lactato, y se traduce en un ritmo aproximado en min/km:</p>
+          <div class="tabla-zonas">
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-1);">Z1</div>
+              <div class="info-zona"><div class="nombre">RECUPERACIÓN</div><div class="desc">Muy cómodo, conversación completa</div></div>
+              <div class="pct">75-80% umbral</div>
+            </div>
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-2);">Z2</div>
+              <div class="info-zona"><div class="nombre">BASE</div><div class="desc">La zona más importante: construye tu aeróbico</div></div>
+              <div class="pct">80-90% umbral</div>
+            </div>
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-3);">Z3</div>
+              <div class="info-zona"><div class="nombre">TEMPO</div><div class="desc">"Cómodamente duro", solo frases cortas</div></div>
+              <div class="pct">90-95% umbral</div>
+            </div>
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-4);">Z4</div>
+              <div class="info-zona"><div class="nombre">UMBRAL</div><div class="desc">Fuerte y controlado, hablar cuesta</div></div>
+              <div class="pct">95-102% umbral</div>
+            </div>
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-5);">Z5</div>
+              <div class="info-zona"><div class="nombre">VO₂MÁX</div><div class="desc">Muy intenso, apenas puedes hablar</div></div>
+              <div class="pct">102-106% umbral</div>
+            </div>
+            <div class="fila-zona">
+              <div class="badge-zona" style="background:var(--zone-6);">Z6</div>
+              <div class="info-zona"><div class="nombre">VELOCIDAD</div><div class="desc">Esfuerzo máximo, solo 1-2 min</div></div>
+              <div class="pct">&gt;106% umbral</div>
+            </div>
+          </div>
+          <p>Entrenar la mayor parte del tiempo en <strong>Z2</strong> es la base de cualquier plan de running serio: es donde se construye la resistencia aeróbica sin acumular fatiga excesiva.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 03 · GENERAR PLAN -->
+    <section class="bloque" id="s-plan">
+      <details>
+        <summary>
+          <span class="icono">📅</span>
+          <span class="titulo"><h2>03 · GENERAR TU PLAN</h2><p>Plan → + Nuevo plan (Premium)</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <div class="aviso"><strong>Generar un plan es una función Premium.</strong> Calcular tus zonas es gratis, pero para que RI5 te construya un calendario completo necesitas ser usuario Premium.</div>
+          <p>Una vez calculadas tus zonas, ve a <strong>Plan → + NUEVO PLAN</strong> y configura:</p>
+          <ul>
+            <li><strong>Modalidad:</strong> runner (asfalto) o trail (montaña).</li>
+            <li><strong>Distancia objetivo:</strong> 2K, 5K, 10K, media maratón o maratón.</li>
+            <li><strong>Duración del plan:</strong> 1, 3, 6 o 12 meses.</li>
+            <li><strong>Días disponibles para entrenar</strong> cada semana.</li>
+            <li><strong>Nivel:</strong> principiante, intermedio o avanzado (avanzado pide mínimo 5 días/semana).</li>
+            <li><strong>Experiencia previa</strong> en esa distancia y tu <strong>objetivo</strong>: terminar, mejorar o competir.</li>
+            <li><strong>Día de la tirada larga:</strong> automático (recomendado) o elegido a mano.</li>
+          </ul>
+          <p>El plan se organiza en fases (Base → Construcción → Específica → Pico → Taper) con un patrón ondulatorio de 3 semanas de progresión + 1 semana de descarga real, para evitar el sobreentrenamiento y llegar fresco al objetivo.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 04 · MARCAR SESIONES -->
+    <section class="bloque" id="s-feedback">
+      <details>
+        <summary>
+          <span class="icono">✅</span>
+          <span class="titulo"><h2>04 · MARCAR SESIONES</h2><p>Tu plan se adapta a cómo te sientes</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Cada vez que completas una sesión de tu plan, la marcas como hecha y valoras cómo te sentiste, de 1 (muy dura) a 4 (excelente).</p>
+          <p>RI5 usa ese feedback para <strong>ajustar automáticamente</strong> las próximas semanas:</p>
+          <ul>
+            <li>Si más del 30% de tus valoraciones son "muy dura", el plan reduce volumen e intensidad un 10%.</li>
+            <li>Si más del 50% son "excelente", el plan sube ligeramente la carga un 5%.</li>
+          </ul>
+          <p>Si intentas marcar una sesión nueva sin haberte recuperado del todo de la anterior (ver punto 05), la app te avisa antes de dejarte continuar.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 05 · CARGA Y RECUPERACIÓN -->
+    <section class="bloque" id="s-carga">
+      <details>
+        <summary>
+          <span class="icono">⚡</span>
+          <span class="titulo"><h2>05 · CARGA Y RECUPERACIÓN</h2><p>La tarjeta ACWR de tu Inicio</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <h3>¿Qué es el TSS?</h3>
+          <p>Cada sesión que completas genera una puntuación de carga (<strong>TSS</strong>, Training Stress Score) según su duración e intensidad. Es la unidad con la que RI5 mide cuánto "cuesta" cada entrenamiento.</p>
+          <h3>ACWR: carga aguda vs. crónica</h3>
+          <p>El dashboard compara tu carga de los últimos <strong>7 días</strong> (aguda) con la de las últimas <strong>4 semanas</strong> (crónica). El resultado (ACWR) te dice si estás entrenando de forma sostenible:</p>
+          <div class="grid-cards">
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#5DADE2;"></span><strong>&lt; 0.8</strong></div><div class="sub">Carga baja — posible pérdida de forma</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#2ECC71;"></span><strong>0.8 – 1.3</strong></div><div class="sub">Óptima</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#F39C12;"></span><strong>1.3 – 1.5</strong></div><div class="sub">Elevada — vigila la recuperación</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#E74C3C;"></span><strong>&gt; 1.5</strong></div><div class="sub">Alto riesgo de lesión</div></div>
+          </div>
+          <p>Necesitas al menos ~10 días con sesiones registradas en las últimas 4 semanas para que este dato sea fiable.</p>
+          <h3>Tiempo de recuperación</h3>
+          <p>Tras cada sesión, RI5 estima cuántas horas necesitas para recuperarte (entre 8 y 72h), según el TSS y el tipo de sesión — unas series dejan más fatiga que un rodaje suave con el mismo TSS. Es una referencia orientativa, no una medición real de pulsómetro o HRV.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 06 · GPS -->
+    <section class="bloque" id="s-gps">
+      <details>
+        <summary>
+          <span class="icono">📍</span>
+          <span class="titulo"><h2>06 · GRABAR CON GPS</h2><p>Sigue tu ruta en tiempo real</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Al empezar una sesión puedes activar el GPS para registrar tu ruta, distancia y ritmo en tiempo real sobre un mapa.</p>
+          <ul>
+            <li><strong>Pausa/Reanudar:</strong> detén el registro sin perder la sesión (por ejemplo, en un semáforo).</li>
+            <li><strong>Bloqueo antiaccidental:</strong> los botones de control aparecen bloqueados por defecto durante la carrera, para evitar toques accidentales con el móvil en el bolsillo o brazalete. Pulsa "🔓 DESBLOQUEAR" cuando necesites usarlos.</li>
+            <li><strong>Al terminar:</strong> puedes revisar y editar la distancia antes de guardar, o descartar la sesión sin guardarla.</li>
+          </ul>
+          <p>Cada ruta guardada se puede volver a ver después desde tu historial, con el mapa, tiempo, ritmo y ciudad donde corriste.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 07 · RÉCORDS -->
+    <section class="bloque" id="s-records">
+      <details>
+        <summary>
+          <span class="icono">🏆</span>
+          <span class="titulo"><h2>07 · RÉCORDS PERSONALES</h2><p>Tus mejores marcas, por distancia</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>RI5 guarda automáticamente tu mejor tiempo en cinco distancias estándar:</p>
+          <div class="grid-cards">
+            <div class="mini-card"><strong>1 km</strong></div>
+            <div class="mini-card"><strong>5 km</strong></div>
+            <div class="mini-card"><strong>10 km</strong></div>
+            <div class="mini-card"><strong>Media maratón</strong> (21,1 km)</div>
+            <div class="mini-card"><strong>Maratón</strong> (42,2 km)</div>
+          </div>
+          <p>Cuando completas una sesión cuya distancia real está dentro de un <strong>15%</strong> de alguna de estas marcas, RI5 la compara con tu mejor tiempo anterior en esa categoría y actualiza el récord si lo mejoras. Los ves en tu tarjeta de perfil.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 08 · NIVELES -->
+    <section class="bloque" id="s-niveles">
+      <details>
+        <summary>
+          <span class="icono">🎖️</span>
+          <span class="titulo"><h2>08 · NIVELES Y EXPERIENCIA</h2><p>Sube de nivel acumulando kilómetros</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Tu nivel sube según los kilómetros totales que acumulas corriendo. Cada nivel tiene su propio color — los mismos 10 tonos que ves en el borde de tu foto de perfil, en tu pasaporte, y con los que se escribe "Running LAB" cada vez que abres la app:</p>
+          <div class="grid-cards">
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#9e9e9e;"></span><strong>Nivel 1</strong></div><div class="sub">0 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#7fa1c9;"></span><strong>Nivel 2</strong></div><div class="sub">50 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#6bb3ae;"></span><strong>Nivel 3</strong></div><div class="sub">120 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#7fb37a;"></span><strong>Nivel 4</strong></div><div class="sub">250 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#a9bd6a;"></span><strong>Nivel 5</strong></div><div class="sub">500 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#cbb15f;"></span><strong>Nivel 6</strong></div><div class="sub">700 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#cf9760;"></span><strong>Nivel 7</strong></div><div class="sub">850 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#c97b5f;"></span><strong>Nivel 8</strong></div><div class="sub">950 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#bd6688;"></span><strong>Nivel 9</strong></div><div class="sub">990 km</div></div>
+            <div class="mini-card"><div class="top"><span class="dot" style="background:#9270c9;"></span><strong>Nivel 10</strong></div><div class="sub">1050 km</div></div>
+          </div>
+          <p>Además de los km, ganas <strong>XP</strong> (experiencia) al conseguir insignias — cuantas más consigas, más rápido avanzas.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 09 · INSIGNIAS -->
+    <section class="bloque" id="s-insignias">
+      <details>
+        <summary>
+          <span class="icono">🏅</span>
+          <span class="titulo"><h2>09 · INSIGNIAS</h2><p>27 logros por desbloquear</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <div class="badges-grupo">
+            <div class="grupo-titulo">HITOS Y CONSTANCIA</div>
+            <div class="badge-row"><span class="icono">🏁</span><div class="txt"><div class="nombre">Primer entrenamiento</div><div class="desc">Completaste tu primera sesión</div></div><span class="xp">+50 XP</span></div>
+            <div class="badge-row"><span class="icono">📅</span><div class="txt"><div class="nombre">Primera semana</div><div class="desc">Completaste tu primera semana</div></div><span class="xp">+100 XP</span></div>
+            <div class="badge-row"><span class="icono">🏅</span><div class="txt"><div class="nombre">Primer mes</div><div class="desc">Completaste tu primer mes</div></div><span class="xp">+300 XP</span></div>
+            <div class="badge-row"><span class="icono">📆</span><div class="txt"><div class="nombre">6 meses seguidos</div><div class="desc">Medio año entrenando cada mes</div></div><span class="xp">+400 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">DISTANCIA ACUMULADA</div>
+            <div class="badge-row"><span class="icono">📏</span><div class="txt"><div class="nombre">100 km</div><div class="desc">Acumulaste 100 km</div></div><span class="xp">+200 XP</span></div>
+            <div class="badge-row"><span class="icono">🌟</span><div class="txt"><div class="nombre">500 km</div><div class="desc">Acumulaste 500 km</div></div><span class="xp">+800 XP</span></div>
+            <div class="badge-row"><span class="icono">🏆</span><div class="txt"><div class="nombre">1000 km</div><div class="desc">Acumulaste 1000 km</div></div><span class="xp">+1500 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">NÚMERO DE SESIONES</div>
+            <div class="badge-row"><span class="icono">🎯</span><div class="txt"><div class="nombre">10 entrenamientos</div><div class="desc">Completaste 10 sesiones</div></div><span class="xp">+150 XP</span></div>
+            <div class="badge-row"><span class="icono">🏆</span><div class="txt"><div class="nombre">50 entrenamientos</div><div class="desc">Completaste 50 sesiones</div></div><span class="xp">+600 XP</span></div>
+            <div class="badge-row"><span class="icono">🎖️</span><div class="txt"><div class="nombre">100 entrenamientos</div><div class="desc">Completaste 100 sesiones</div></div><span class="xp">+1200 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">RACHA</div>
+            <div class="badge-row"><span class="icono">🔥</span><div class="txt"><div class="nombre">Racha de 7 días</div><div class="desc">Entrenaste una semana seguida</div></div><span class="xp">+70 XP</span></div>
+            <div class="badge-row"><span class="icono">💪</span><div class="txt"><div class="nombre">Racha de 30 días</div><div class="desc">Un mes entero entrenando</div></div><span class="xp">+300 XP</span></div>
+            <div class="badge-row"><span class="icono">🏆</span><div class="txt"><div class="nombre">Racha de 100 días</div><div class="desc">100 días seguidos</div></div><span class="xp">+1200 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">RITMO Y VELOCIDAD</div>
+            <div class="badge-row"><span class="icono">⚡</span><div class="txt"><div class="nombre">Ritmo &lt; 5:00/km</div><div class="desc">Bajaste de 5:00/km</div></div><span class="xp">+100 XP</span></div>
+            <div class="badge-row"><span class="icono">🚀</span><div class="txt"><div class="nombre">Ritmo &lt; 4:00/km</div><div class="desc">Bajaste de 4:00/km</div></div><span class="xp">+200 XP</span></div>
+            <div class="badge-row"><span class="icono">💨</span><div class="txt"><div class="nombre">20 km/h</div><div class="desc">Alcanzaste 20 km/h</div></div><span class="xp">+60 XP</span></div>
+            <div class="badge-row"><span class="icono">🦅</span><div class="txt"><div class="nombre">30 km/h</div><div class="desc">Velocidad de sprint</div></div><span class="xp">+250 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">ZONAS Y DESNIVEL</div>
+            <div class="badge-row"><span class="icono">❤️</span><div class="txt"><div class="nombre">60 min en Z4</div><div class="desc">Acumulaste 60 minutos en zona 4</div></div><span class="xp">+300 XP</span></div>
+            <div class="badge-row"><span class="icono">💜</span><div class="txt"><div class="nombre">30 min en Z5</div><div class="desc">Acumulaste 30 minutos en zona 5</div></div><span class="xp">+500 XP</span></div>
+            <div class="badge-row"><span class="icono">⛰️</span><div class="txt"><div class="nombre">500 m de desnivel</div><div class="desc">Acumulaste 500 m de subida</div></div><span class="xp">+200 XP</span></div>
+            <div class="badge-row"><span class="icono">🏔️</span><div class="txt"><div class="nombre">1000 m de desnivel</div><div class="desc">Subidón</div></div><span class="xp">+500 XP</span></div>
+          </div>
+          <div class="badges-grupo">
+            <div class="grupo-titulo">TIPOS DE SESIÓN Y ESPECIALES</div>
+            <div class="badge-row"><span class="icono">🚶‍♂️</span><div class="txt"><div class="nombre">10 tiradas largas</div><div class="desc">10 sesiones largas</div></div><span class="xp">+200 XP</span></div>
+            <div class="badge-row"><span class="icono">⚡</span><div class="txt"><div class="nombre">10 series</div><div class="desc">10 sesiones de series</div></div><span class="xp">+250 XP</span></div>
+            <div class="badge-row"><span class="icono">💪</span><div class="txt"><div class="nombre">10 fuerza</div><div class="desc">10 sesiones de fuerza</div></div><span class="xp">+100 XP</span></div>
+            <div class="badge-row"><span class="icono">☀️</span><div class="txt"><div class="nombre">Dominguero</div><div class="desc">Entrenaste un domingo</div></div><span class="xp">+20 XP</span></div>
+            <div class="badge-row"><span class="icono">🌅</span><div class="txt"><div class="nombre">Madrugador</div><div class="desc">Entrenaste antes de las 6:00</div></div><span class="xp">+30 XP</span></div>
+            <div class="badge-row"><span class="icono">🏃‍♀️</span><div class="txt"><div class="nombre">10 km</div><div class="desc">Corriste 10 km en una sesión</div></div><span class="xp">+100 XP</span></div>
+            <div class="badge-row"><span class="icono">🏅</span><div class="txt"><div class="nombre">Maratón</div><div class="desc">Completaste 42,2 km</div></div><span class="xp">+500 XP</span></div>
+            <div class="badge-row"><span class="icono">📍</span><div class="txt"><div class="nombre">GPS activado</div><div class="desc">Usaste el GPS por primera vez</div></div><span class="xp">+25 XP</span></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 10 · ZAPATILLAS -->
+    <section class="bloque" id="s-zapatillas">
+      <details>
+        <summary>
+          <span class="icono">👟</span>
+          <span class="titulo"><h2>10 · ZAPATILLAS</h2><p>Controla el desgaste de tu calzado</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <p>Desde tu perfil puedes registrar tu zapatilla actual. Cada sesión que completas suma sus kilómetros a esa zapatilla automáticamente, para que sepas cuándo te conviene cambiarla (la referencia habitual son 600-800 km por par).</p>
+          <p>Cuando estrenas unas nuevas, pulsa <strong>"👟 Cambiar"</strong>: la zapatilla anterior pasa a tu <strong>historial</strong> con el total de km que le sacaste, y el contador de la nueva empieza en 0.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 11 · COMUNIDAD -->
+    <section class="bloque" id="s-comunidad">
+      <details>
+        <summary>
+          <span class="icono">👥</span>
+          <span class="titulo"><h2>11 · COMUNIDAD</h2><p>Muro, amigos y chat</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <h3>Muro</h3>
+          <p>Cada sesión que completas puede aparecer en el muro global, con su tipo de entrenamiento, distancia, tiempo, ritmo y un mini-mapa si usaste GPS. El resto de la comunidad puede darle like.</p>
+          <h3>Amigos</h3>
+          <p>Busca a otros usuarios por nombre, envíales una solicitud de amistad y, cuando la acepten, podréis ver mutuamente vuestro pasaporte de gamificación (nivel, insignias, zapatilla) desde la pestaña Amigos.</p>
+          <h3>Chat</h3>
+          <p>Con tus amigos puedes abrir una conversación privada directamente desde su perfil, con notificación de mensajes no leídos.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 12 · PREMIUM -->
+    <section class="bloque" id="s-premium">
+      <details>
+        <summary>
+          <span class="icono">✨</span>
+          <span class="titulo"><h2>12 · RI5 PREMIUM</h2><p>Qué cambia respecto a la cuenta gratis</p></span>
+          <span class="flecha">▾</span>
+        </summary>
+        <div class="contenido">
+          <ul>
+            <li><strong>Cálculo de zonas ilimitado</strong> (la cuenta gratis tiene 10 al mes).</li>
+            <li><strong>Generación de planes de entrenamiento</strong> — es una función exclusiva de Premium, de 1 a 12 meses de duración.</li>
+            <li><strong>Prioridad en soporte.</strong></li>
+            <li><strong>Acceso a contenido exclusivo.</strong></li>
+          </ul>
+          <div class="aviso">Para hacerte Premium o pedir un plan a medida, contacta por Instagram: <strong>@coachjoaquinpeinado</strong></div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+
+  <footer>
+    RI5 · Running Intelligence — <a href="index.html">Volver a la app</a>
+  </footer>
+
+  <script>
+    // ── Tema: comparte la misma clave de localStorage ('ri5_theme') que
+    // usa toggleTheme() en app.js, para que la guía respete el modo
+    // claro/oscuro que la persona ya tenga elegido en el resto de la app. ──
+    (function() {
+      var saved = localStorage.getItem('ri5_theme');
+      if (saved === 'light') document.body.classList.add('manual-light');
+      else if (saved === 'dark') document.body.classList.add('manual-dark');
+      var btn = document.getElementById('themeToggleBtn');
+      if (btn) btn.textContent = document.body.classList.contains('manual-light') ? '☀️' : '🌙';
+    })();
+
+    window.toggleGuiaTheme = function(btn) {
+      var newTheme;
+      if (document.body.classList.contains('manual-light')) newTheme = 'dark';
+      else if (document.body.classList.contains('manual-dark')) newTheme = 'light';
+      else {
+        var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        newTheme = isDark ? 'light' : 'dark';
+      }
+      document.body.classList.remove('manual-light', 'manual-dark');
+      document.body.classList.add(newTheme === 'light' ? 'manual-light' : 'manual-dark');
+      localStorage.setItem('ri5_theme', newTheme);
+      if (btn) btn.textContent = newTheme === 'light' ? '☀️' : '🌙';
+    };
+
+    // ── Marca "RI5 | Running LAB" con la misma escala de 10 colores de
+    // nivel que usa Gamification.getColorByLevel y el splash de entrada
+    // de index.html (RI5/| siempre en dorado, las 10 letras de "Running
+    // LAB" con un color de nivel cada una, de izquierda a derecha). ──
+    (function() {
+      var GOLD_VAR = 'var(--gold)';
+      var LEVEL_COLORS = ['#9e9e9e', '#7fa1c9', '#6bb3ae', '#7fb37a', '#a9bd6a', '#cbb15f', '#cf9760', '#c97b5f', '#bd6688', '#9270c9'];
+      var TEXTO = 'RI5 | Running LAB';
+      var RUNNING_LAB = 'Running LAB';
+      var inicio = TEXTO.indexOf(RUNNING_LAB);
+
+      function construir(destino) {
+        if (!destino) return;
+        destino.innerHTML = '';
+        var contador = 0;
+        TEXTO.split('').forEach(function(ch, i) {
+          var dentro = inicio !== -1 && i >= inicio && i < inicio + RUNNING_LAB.length;
+          var esLetraNivel = dentro && ch !== ' ';
+          var span = document.createElement('span');
+          span.textContent = (ch === ' ') ? '\u00A0' : ch;
+          span.style.color = esLetraNivel ? LEVEL_COLORS[contador % LEVEL_COLORS.length] : GOLD_VAR;
+          if (esLetraNivel) contador++;
+          destino.appendChild(span);
+        });
+      }
+      construir(document.getElementById('marcaHeader'));
+      construir(document.getElementById('marcaHero'));
+    })();
+  </script>
+
+</body>
+</html>
